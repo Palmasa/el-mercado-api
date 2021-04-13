@@ -1,0 +1,21 @@
+module.exports.ccaa = [
+  'Andalucía',
+  'Aragón',
+  'Asturias',
+  'Baleares',
+  'Canarias',
+  'Cantabria',
+  'Castilla y León',
+  'Castilla La Mancha',
+  'Cataluña',
+  'Valencia',
+  'Extremadura',
+  'Galicia',
+  'Madrid',
+  'Murcia',
+  'Navarra',
+  'País Vasco',
+  'La Rioja',
+  'Ceuta',
+  'Melilla'
+]

@@ -29,7 +29,8 @@
     "http-errors": "^1.7.2",
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^5.12.3",
-    "morgan": "^1.10.0"
+    "morgan": "^1.10.0",
+    "uuid": "^8.3.2"
   },
   "devDependencies": {
     "nodemon": "^2.0.7"

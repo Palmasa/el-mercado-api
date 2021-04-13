@@ -1,3 +1,3 @@
-# el-mercado-api
+# El Mercado - API
 
 REST api
