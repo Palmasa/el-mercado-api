@@ -3,6 +3,6 @@ const router = express.Router()
 const indexController = require('../controllers/index.controller')
 
 // example route, delete
-router.get('/', indexController.index)
+router.get('/', indexController.index);
 
-module.exports = router
+module.exports = router;
