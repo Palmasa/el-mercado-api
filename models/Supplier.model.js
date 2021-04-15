@@ -2,7 +2,7 @@ const mongoose = require("mongoose")
 const bcrypt = require("bcrypt")
 const SALT = 10
 const EMAIL_PATTERN = /^(([^<>()[\]\\.,;:\s@“]+(\.[^<>()[\]\\.,;:\s@“]+)*)|(“.+“))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-const { ccaa } = require("../constants/ccaa")
+const { ccaa, provinces } = require("../constants/ccaa")
 const { supplierCategs, supplierType } = require("../constants/supplierCategs")
 
 const supplierSchema = new mongoose.Schema(
@@ -62,7 +62,12 @@ const supplierSchema = new mongoose.Schema(
         default: "España",
       },
       CA: {
-        enum: ccaa,
+        type: String,
+        enum: ccaa
+      },
+      province: {
+        type: String,
+        enum: provinces
       },
       city: String,
       street: String,
@@ -85,6 +90,10 @@ const supplierSchema = new mongoose.Schema(
       type: String,
       minlenght: [ 10, "La descripción del responsable es demasiado corta" ],
       maxlength: [ 600, "La descripción del responsable es demasiado larga" ]
+    },
+    active: {
+      type: Boolean,
+      default: false
     }
   },
   {

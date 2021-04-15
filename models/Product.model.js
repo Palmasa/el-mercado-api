@@ -29,7 +29,9 @@ const productSchema = new mongoose.Schema(
       required: true,
       enum: [ 'Kg', 'Unidad', 'Pack' ]
     },
-    ifPack: String, // describe what contains the pack
+    ifPack: {
+      u: Number
+    },
     stock: {
       type: Number,
       required: true

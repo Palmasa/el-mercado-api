@@ -1,7 +1,7 @@
 module.exports.productCategs = [
   // 'Aceites y vinagres' =========================================================
-  'Aceite oliva',
-  'Aceite girasol',
+  'Aceite de oliva',
+  'Aceite de girasol',
   'Vinagres',
   'Aliños',
   // 'Café y té', =================================================================

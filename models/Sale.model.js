@@ -2,11 +2,13 @@ const mongoose = require('mongoose')
 
 const saleSchema = new mongoose.Schema(
   {
-    product: [
+    products: [
       {
-        type: mongoose.Types.ObjectId,
-        required: true,
-        ref: 'Product',
+        product: {
+          type: mongoose.Types.ObjectId,
+          required: true,
+          ref: 'Product',
+        },
         quantity: Number
       }
     ],
@@ -14,8 +16,7 @@ const saleSchema = new mongoose.Schema(
       type: mongoose.Types.ObjectId,
       required: true,
       ref: 'User'
-    },
-    quantity: Number,
+    }
   },
   {
     timestamps: true,
