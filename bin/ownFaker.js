@@ -41,72 +41,82 @@ module.exports.address = [
  ]
 
  module.exports.owner = [
-   {
-    ownerName: 'Manolo Carrillo',
-    ownerImg: 'img',
-   },
-   {
-    ownerName: 'Jorge del Cisne',
-    ownerImg: 'img',
-    ownerBio: 'Panadero de toda la vida, mija',
-   },
-   {
-    ownerName: 'Pablo Plaso',
-    ownerImg: 'img',
-    ownerBio: 'El mar es mi pasión',
-   },
-   {
-    ownerName: 'Carolina de Alín',
-    ownerImg: 'img',
-    ownerBio: 'Me gusta poner un contexto a mi producto',
-   },
-   {
-    ownerName: 'Carlitos del ',
-    ownerImg: 'img',
-    ownerBio: 'Reviso todos los productos y les encuentro pegas',
-   },
+  {
+    owner: {
+      name: 'Manolo Carrillo',
+      img: 'img',
+    }
+  },
+  {
+    owner: {
+      name: 'Jorge del Cisne',
+      img: 'img',
+      bio: 'Panadero de toda la vida, mija',
+    }
+  },
+  {
+    owner: {
+      name: 'Pablo Plaso',
+      img: 'img',
+      bio: 'El mar es mi pasión',
+    }
+  },
+  { 
+    owner: {
+      name: 'Carolina de Alín',
+      img: 'img',
+      bio: 'Me gusta poner un contexto a mi producto',
+    }
+  },
+  {
+    owner: {
+      name: 'Carlitos del ',
+      img: 'img',
+      bio: 'Reviso todos los productos y les encuentro pegas',
+    }
+  },
  ]
 
  module.exports.commerce = [
    {
     email: 'carniceriaManolo@gmail.com',
-    commerceName: 'Carnicería Manolo e hijos',
+    name: 'Carnicería Manolo e hijos SL',
     categ: 'Carne y aves',
-    commerceType: 'Productor',
-    commerceImg: 'img',
-    comerceBio: 'Buscamos dar siempre la mayor calidad. Un producto natural, criado y cuidado de la mejor manera posible por mi propia familia. Las propiedades de esta raza proporcionan una calidad única',
+    type: 'Productor',
+    img: 'img',
+    bio: 'Buscamos dar siempre la mayor calidad. Un producto natural, criado y cuidado de la mejor manera posible por mi propia familia. Las propiedades de esta raza proporcionan una calidad única',
    },
    {
     email: 'jorgeesdulce@gmail.com',
-    commerceName: 'Los dulces del norte',
+    name: 'Los dulces del norte',
     categ: 'Dulces',
-    commerceType: 'Productor',
-    commerceImg: 'img',
-    commerceBio: 'Todo elaborado artesanalmente y con la mayor ternura',
+    type: 'Productor',
+    img: 'img',
+    bio: 'Todo elaborado artesanalmente y con la mayor ternura',
    },
    {
     email: 'anchoaslaso@gmail.com',
-    commerceName: 'Anchoas Laso',
+    name: 'Anchoas Laso',
     categ: 'Conservas',
-    commerceType: 'Proveedor',
-    commerceImg: 'img',
-    commerceBio: 'Seguimos el mismo proceso artesanal desde 1857',
+    type: 'Proveedor',
+    img: 'img',
+    bio: 'Seguimos el mismo proceso artesanal desde 1857',
    },
    {
     email: 'panaderiacontexto@gmail.com',
-    commerceName: 'Pan en contexto',
+    name: 'Pan en contexto',
     categ: 'Panes, cereales y harinas',
-    commerceType: 'Productor',
-    commerceImg: 'img',
-    commerceBio: 'Soy proveedora del contexto de los panes. A mis consumers les digo que lo disfruten',
+    type: 'Productor',
+    img: 'img',
+    bio: 'Soy proveedora del contexto de los panes. A mis consumers les digo que lo disfruten',
    },
    {
     email: 'carlosmantecao@gmail.com',
-    commerceName: 'Mantecas Colorás',
+    name: 'Mantecas Colorás',
     categ: 'Mermeladas y miel',
-    commerceType: 'Proveedor',
-    commerceImg: 'img',
-    commerceBio: 'La manteca colorá de toda la vida elaborada a mano con mucho esfuerzo. Reviso cada gramo.',
+    type: 'Proveedor',
+    img: 'img',
+    bio: 'La manteca colorá de toda la vida elaborada a mano con mucho esfuerzo. Reviso cada gramo.',
     certificates: {
       img: 'img',
       name: 'Premio andaluz a la mejor manteca'

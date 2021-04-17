@@ -3,7 +3,7 @@ const bcrypt = require("bcrypt");
 const SALT = 10;
 const EMAIL_PATTERN = /^(([^<>()[\]\\.,;:\s@“]+(\.[^<>()[\]\\.,;:\s@“]+)*)|(“.+“))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 const { v4: uuidv4 } = require("uuid");
-const { ccaa } = require("../constants/ccaa");
+const { ccaa, provinces } = require("../constants/ccaa")
 
 const userSchema = new mongoose.Schema(
   {
@@ -40,7 +40,12 @@ const userSchema = new mongoose.Schema(
         default: "España",
       },
       CA: {
-        enum: ccaa,
+        type: String,
+        enum: ccaa
+      },
+      province: {
+        type: String,
+        enum: provinces
       },
       city: String,
       street: String,

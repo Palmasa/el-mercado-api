@@ -1,4 +1,5 @@
 const Product = require("../models/Product.model");
+const Sale = require("../models/Sale.model");
 
 
 // example controller, delete
@@ -7,7 +8,16 @@ module.exports.index = (req, res, next) => {
 };
 
 module.exports.products = async (req, res, next) => {
-  const listProducts = await Product.find()
-  try { res.json(listProducts) }
-  catch { next }
+  try { 
+    const listProducts = await Product.find()
+    res.json(listProducts)
+  } catch(e) { next(e) }
+}
+
+
+module.exports.createSale = async (req, res, next) => {
+  try {
+    const sale = await Sale.create(req.body)
+    res.status(201).json(sale)
+  } catch(e) { next(e) }
 }

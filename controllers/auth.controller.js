@@ -16,7 +16,7 @@ module.exports.registration = async (req, res, next) => {
     
     try {
       mailer.sendActivationEmail(userCreated.email, userCreated.token)
-      res.status(201).json({}) //JFK: why do I have to return an emty object for Postman to stop? it works either way but Postman, ay postman
+      res.status(201).json({ message: "Usuario registrado"}) //JFK: why do I have to return an emty object for Postman to stop? it works either way but Postman, ay postman
     } catch (e) {
       if (e instanceof mongoose.Error.ValidationError) {
         next(createError(401, { errors: { email: 'Intente registrarse de nuevo' }}))
@@ -32,7 +32,7 @@ module.exports.activate = async (req, res, next) => {
   // JFK: Not sure if line 34 goes in the try or here works either way
   try {
     await User.findOneAndUpdate({ token: token }, { active: true }, { useFindAndModify: false })
-    res.status(201).json({}) // JFK '' line 19
+    res.status(201).json({ message: "Usuario activado" }) // JFK '' line 19
   } catch(e) {
     next(e)
   }

@@ -20,7 +20,7 @@ const supplierSchema = new mongoose.Schema(
       required: true,
       minlength: [ 6, 'La contraseña debe tener al menos 6 caracteres' ]
     },
-    commerceName: {
+    name: {
       type: String,
       trim: true,
       maxlength: [60, "El nombre del comercio es demasiado largo"],
@@ -31,15 +31,15 @@ const supplierSchema = new mongoose.Schema(
       required: true,
       enum: supplierCategs,
     },
-    commerceType: {
+    type: {
       type: String,
       required: true,
       enum: supplierType,
     },
-    commerceImgs: {
+    imgs: {
       enum: [ String ],
     },
-    commerceBio: {
+    bio: {
       type: String,
       minlenght: [ 25, "La descripción del comercio es demasiado corta" ],
       maxlength: [ 600, "La descripción del comercio es demasiado larga" ],
@@ -80,16 +80,18 @@ const supplierSchema = new mongoose.Schema(
         name: String,
       },
     ],
-    ownerName: {
-      type: String,
-      trim: true,
-      maxlength: [ 40, 'El nombre es demasiado largo' ]
-    },
-    ownerImg: String,
-    ownerBio: {
-      type: String,
-      minlenght: [ 10, "La descripción del responsable es demasiado corta" ],
-      maxlength: [ 600, "La descripción del responsable es demasiado larga" ]
+    owner: {
+      name: {
+        type: String,
+        trim: true,
+        maxlength: [ 40, 'El nombre es demasiado largo' ]
+      },
+      img: String,
+      bio: {
+        type: String,
+        minlenght: [ 10, "La descripción del responsable es demasiado corta" ],
+        maxlength: [ 600, "La descripción del responsable es demasiado larga" ]
+      },
     },
     active: {
       type: Boolean,
