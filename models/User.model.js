@@ -34,7 +34,7 @@ const userSchema = new mongoose.Schema(
       type: String,
       default: uuidv4(),
     },
-    address: {
+    address: [{
       country: {
         type: String,
         default: "España",
@@ -51,11 +51,11 @@ const userSchema = new mongoose.Schema(
       street: String,
       number: Number,
       zip: Number,
-    },
+    }],
     underAge: {
       type: Boolean,
       default: false,
-    },
+    }
   },
   {
     timestamps: true,

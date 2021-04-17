@@ -10,7 +10,9 @@ module.exports.registration = async (req, res, next) => {
   const user = await Promise.all([User.findOne({ email }), Supplier.findOne({ email })])
 
   if (user[0] || user[1]) {
-    next(createError(400, { errors: { email: 'Este email ya está registrado' }}))
+    user[0]
+    ? next(createError(400, { errors: { email: 'Este email ya está registrado' }}))
+    : next(createError(400, { errors: { email: 'Email registrado como vendedor' }}))
   } else {
     const userCreated = await User.create(req.body)
     
@@ -29,7 +31,7 @@ module.exports.registration = async (req, res, next) => {
 
 module.exports.activate = async (req, res, next) => {
   const { token } = req.params
-  // JFK: Not sure if line 34 goes in the try or here works either way
+
   try {
     await User.findOneAndUpdate({ token: token }, { active: true }, { useFindAndModify: false })
     res.status(201).json({ message: "Usuario activado" }) // JFK '' line 19
@@ -37,22 +39,21 @@ module.exports.activate = async (req, res, next) => {
     next(e)
   }
 }
-// TODO: PONER QUE SOLO LOS ACTIVES PUEDEN LOGUEARSE
+
 module.exports.login = async (req, res, next) => {
   const { email, password } = req.body
 
   const user = await User.findOne({ email })
 
   if (!user) {
-    // Error if no user
     next(createError(404, { errors: { email: 'Email o contraseña incorrectos' }})) // error es de mongoose
   } else {
     const match = user.checkPassword(password)
     if (!match) {
-      //Error if no password
       next(createError(404, { errors: { email: 'Email o contraseña incorrectos' }}))
+    } else if (match && !user.active) {
+      next(createError(404, { errors: { email: 'Su cuenta no está activa, por favor revise su email' }}))
     } else {
-      // JWT generation - only id is passed
       res.json({ 
         access_token: jwt.sign(
           { id: user._id },

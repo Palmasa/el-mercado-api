@@ -9,13 +9,21 @@ const saleSchema = new mongoose.Schema(
           required: true,
           ref: 'Product',
         },
-        quantity: Number
+        quantity: Number,
+        state:{
+          enum: [ 'Procesando', 'Aceptado', 'Denegado', 'Enviado', 'Entregado' ],
+          default: 'Procesando'
+        }
       }
     ],
     user: {
       type: mongoose.Types.ObjectId,
       required: true,
       ref: 'User'
+    },
+    payed: {
+      type: Boolean,
+      default: false
     }
   },
   {
