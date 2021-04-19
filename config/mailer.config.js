@@ -19,11 +19,22 @@ transporter.verify(function (error, success) {
 
 module.exports.sendActivationEmail = (email, token) => {
   transporter
-        .sendMail({
-            from: `"El Mercado" <ines@el-mercado.es>`,
-            to: email,
-            subject: 'Activa tu cuenta',
-            text: `Gracias por registrarte en El Mercado http://localhost:3001/api/activate/${token}`,
-            html: `<p>Gracias por registrarte en El Mercado <a href="http://localhost:3001/api/activate/${token}">Click</a> http://localhost:/activate/${token}</p>`
-        })
+    .sendMail({
+      from: `"El Mercado" <ines@el-mercado.es>`,
+      to: email,
+      subject: 'Activa tu cuenta',
+      text: `Gracias por registrarte en El Mercado http://localhost:3001/api/activate/${token}`,
+      html: `<p>Gracias por registrarte en El Mercado <a href="http://localhost:3001/api/activate/${token}">Click</a> http://localhost:/activate/${token}</p>`
+    })
+}
+
+module.exports.sendActivationEmailSupplier = (email, token) => {
+  transporter
+  .sendMail({
+    from: `"El Mercado" <ines@el-mercado.es>`,
+    to: email,
+    subject: 'Activa tu cuenta de vendedor',
+    text: `Gracias por registrarte en El Mercado como vendedor http://localhost:3001/api/activate/${token}`,
+    html: `<p>Gracias por registrarte en El Mercado como vendedor <a href="http://localhost:3001/api/activate/${token}">Click</a> http://localhost:/activate/${token}</p>`
+  })
 }

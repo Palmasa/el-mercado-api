@@ -1,5 +1,6 @@
 const mongoose = require("mongoose")
 const bcrypt = require("bcrypt")
+const { v4: uuidv4 } = require("uuid");
 const SALT = 10
 const EMAIL_PATTERN = /^(([^<>()[\]\\.,;:\s@“]+(\.[^<>()[\]\\.,;:\s@“]+)*)|(“.+“))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 const { ccaa, provinces } = require("../constants/ccaa")
@@ -96,7 +97,11 @@ const supplierSchema = new mongoose.Schema(
     active: {
       type: Boolean,
       default: false
-    }
+    },
+    token: {
+      type: String,
+      default: uuidv4(),
+    },
   },
   {
     timestamps: true,

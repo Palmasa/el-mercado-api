@@ -15,13 +15,12 @@ module.exports.registration = async (req, res, next) => {
     : next(createError(400, { errors: { email: 'Email registrado como vendedor' }}))
   } else {
     const userCreated = await User.create(req.body)
-    
     try {
       mailer.sendActivationEmail(userCreated.email, userCreated.token)
-      res.status(201).json({ message: "Usuario registrado"}) //JFK: why do I have to return an emty object for Postman to stop? it works either way but Postman, ay postman
+      res.status(201).json({ message: "Usuario registrado"})
     } catch (e) {
       if (e instanceof mongoose.Error.ValidationError) {
-        next(createError(401, { errors: { email: 'Intente registrarse de nuevo' }}))
+        next(createError(401, { errors: { email: 'Email inválido', password: 'Contraseña inválida' }}))
       } else {
         next(e)
       }
@@ -33,8 +32,12 @@ module.exports.activate = async (req, res, next) => {
   const { token } = req.params
 
   try {
-    await User.findOneAndUpdate({ token: token }, { active: true }, { useFindAndModify: false })
-    res.status(201).json({ message: "Usuario activado" }) // JFK '' line 19
+    const user = await User.findOneAndUpdate({ token }, { active: true }, { useFindAndModify: false })
+    if (user) {
+      res.status(201).json({ message: "Usuario activado" })
+    } else {
+      next(createError(404))
+    }
   } catch(e) {
     next(e)
   }
@@ -48,7 +51,7 @@ module.exports.login = async (req, res, next) => {
   if (!user) {
     next(createError(404, { errors: { email: 'Email o contraseña incorrectos' }})) // error es de mongoose
   } else {
-    const match = user.checkPassword(password)
+    const match = await user.checkPassword(password)
     if (!match) {
       next(createError(404, { errors: { email: 'Email o contraseña incorrectos' }}))
     } else if (match && !user.active) {
@@ -67,13 +70,11 @@ module.exports.login = async (req, res, next) => {
   }
 }
 
-module.exports.get = (req, res, next) => {
-  User.findById(req.currentUser) // aquñí es donde está el id del que me viene con el token
-    .then(user => {
-      if (!user) {
-        next(createError(404))
-      } else {
-        res.json(user)
-      }
-    })
+module.exports.get = async (req, res, next) => {
+  const user = await User.findById(req.currentUser) // id del token introducido por auth.middleware
+  if (!user) {
+    next(createError(404))
+  } else {
+    res.json(user)
+  }
 }

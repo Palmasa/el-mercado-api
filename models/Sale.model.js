@@ -10,7 +10,8 @@ const saleSchema = new mongoose.Schema(
           ref: 'Product',
         },
         quantity: Number,
-        state:{
+        state: {
+          type: String,
           enum: [ 'Procesando', 'Aceptado', 'Denegado', 'Enviado', 'Entregado' ],
           default: 'Procesando'
         }
