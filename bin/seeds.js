@@ -13,7 +13,7 @@ mongoose.connection.once('open', () => {
     .then(() => {
       const suppliers = []
 
-      for (let i = 0; i < supp.lenght; i++) {
+      for (let i = 0; i < 5; i++) {
         suppliers.push({
           ...supp[i],
           password: 'Elmercado21',

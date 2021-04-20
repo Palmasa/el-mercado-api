@@ -78,6 +78,10 @@ const supplierSchema = new mongoose.Schema(
       number: Number,
       zip: Number,
     },
+    shipping: [{
+      province: String,
+      sendPrice: Number
+    }],
     certificates: [
       {
         img: String,

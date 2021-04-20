@@ -1,8 +1,11 @@
+const { slugGeneratorSupplier } = require("../helpers/slug.generator");
+
 module.exports.supp = [
   {
     email: 'carniceriaManolo@gmail.com',
     name: 'Carnicería Manolo e hijos SL',
-    categ: 'Carne y aves',
+    categ: ['Carne y aves'],
+    slug: slugGeneratorSupplier( 'Carnicería Manolo e hijos', ['Carne y aves']),
     type: 'Productor',
     img: [ './faker.Imgs/carnicerias/carniceria-1.jpeg', './faker.Imgs/carnicerias/carniceria-2.jpeg', './faker.Imgs/carnicerias/carniceria-3.jpeg'],
     logo: './faker.Imgs/carnicerias/logo-carniceria-1.png',
@@ -13,6 +16,7 @@ module.exports.supp = [
       number: 16,
       zip: 45500,
     },
+    shipping: [ 'Península', 'Baleares' ],
     owner: {
       name: 'Manolo Carrillo',
       img: './faker.Imgs/carnicerias/carnicero-1.jpeg',
@@ -22,7 +26,8 @@ module.exports.supp = [
   {
     email: 'jorgeesdulce@gmail.com',
     name: 'Los dulces del norte',
-    categ: 'Dulces',
+    categ: ['Dulces'],
+    slug: slugGeneratorSupplier('Los dulces del norte', ['Dulces']),
     type: 'Productor',
     img: [ './faker.Imgs/pastelerias/pasteleria-1.jpeg', './faker.Imgs/pastelerias/pasteleria-3.jpeg'],
     logo: './faker.Imgs/pastelerias/logo-pasteleria-1.png',
@@ -34,6 +39,7 @@ module.exports.supp = [
       number: 1,
       zip: 33300,
     },
+    shipping: [ 'Península', 'Baleares' ],
     owner: {
       name: 'Jorge del Cisne',
       img: './faker.Imgs/pastelerias/pastelero-1.jpeg',
@@ -44,7 +50,8 @@ module.exports.supp = [
   {
     email: 'anchoaslaso@gmail.com',
     name: 'Anchoas Laso',
-    categ: 'Conservas',
+    categ: ['Conservas'],
+    slug: slugGeneratorSupplier('Anchoas Laso', ['Conservas']),
     type: 'Proveedor',
     img: [ './faker.Imgs/pescados/anchoas-1.jpeg', './faker.Imgs/pescados/anchoas-2.jpeg'],
     logo: './faker.Imgs/pescados/logo-anchoas-1.jpeg',
@@ -56,6 +63,7 @@ module.exports.supp = [
       number: 2,
       zip: 39540,
     },
+    shipping: [ 'Península', 'Baleares' ],
     owner:{
       name: 'Pablo Plaso',
       img: './faker.Imgs/pescados/pescadero-1.jpeg',
@@ -66,7 +74,8 @@ module.exports.supp = [
   {
     email: 'panaderiacontexto@gmail.com',
     name: 'Pan en contexto',
-    categ: 'Panes, cereales y harinas',
+    categ: ['Panes, cereales y harinas', 'Dulces'],
+    slug: slugGeneratorSupplier( 'Pan en contexto', ['Panes cereales y harinas', 'Dulces']),
     type: 'Productor',
     img: [ './faker.Imgs/panaderias/panaderia-1.jpeg', './faker.Imgs/panaderias/panaderia-2.jpeg', './faker.Imgs/panaderias/panaderia-3.jpeg'],
     logo: './faker.Img/logo-panaderia-1.jpeg',
@@ -78,6 +87,7 @@ module.exports.supp = [
       number: 17,
       zip: 37882,
     },
+    shipping: [ 'Península', 'Baleares' ],
     owner: {
       name: 'Carolina de Alín',
       img: './faker.Imgs/panaderias/panadera-1.jpeg',
@@ -88,7 +98,8 @@ module.exports.supp = [
   {
     email: 'carlosmantecao@gmail.com',
     name: 'Mantecas Colorás',
-    categ: 'Mermeladas y miel',
+    categ: ['Mermeladas y miel'],
+    slug: slugGeneratorSupplier('Mantecas Colorás', ['Mermeladas y miel']),
     type: 'Proveedor',
     img: ['./faker.Imgs/mermeladas.miel/manteca-1.jpeg'],
     address: {
@@ -99,6 +110,7 @@ module.exports.supp = [
       number: 10,
       zip: 41400,
     },
+    shipping: [ 'Península', 'Baleares' ],
     owner: {
       name: 'Carlitos del ',
       img: 'img',

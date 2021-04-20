@@ -1,6 +1,5 @@
 const createError = require('http-errors');
 const mongoose = require('mongoose')
-const Supplier = require("../models/Supplier.model");
 const Product = require("../models/Product.model");
 const calcs = require('../calcs/product.rank');
 const { slugGeneratorProduct } = require('../helpers/slug.generator');
@@ -8,14 +7,14 @@ const { slugGeneratorProduct } = require('../helpers/slug.generator');
 // Get all products
 module.exports.getAll = async (req, res, next) => {
   const criteria = {}
-  const { category, search } = req.query
+  const { categ, search } = req.query
 
   if (search) {
     criteria.name = new RegExp(search, 'i')
   }
 
-  if (category) {
-    criteria.categories = { '$in': [category] }
+  if (categ) {
+    criteria.categ = { '$in': [categ] }
   }
 
   criteria.active = true
@@ -109,8 +108,7 @@ module.exports.update = async (req, res, next) => {
             stock: 'Debe indicar qué cantidad de producto se encuentra disponible para la venta',
             price: 'Se debe indicar el precio del producto',
             sendTime: 'Se debe indicar el tiempo estimado de entrega'
-          }}
-          ))
+          }}))
         } else {
           next(e)
         }
@@ -123,7 +121,7 @@ module.exports.update = async (req, res, next) => {
 }
 
 // Desactivate product
-module.exports.delete = async (req, res, next) => {
+module.exports.desactivate = async (req, res, next) => {
 
   try {
     const product = await Product.findById(req.params.id)
