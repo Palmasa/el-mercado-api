@@ -1,9 +1,8 @@
 const mongoose = require('mongoose')
-const Product = require('../models/Product.model')
 const Supplier = require('../models/Supplier.model')
-const { owner, address, commerce } = require('./ownFaker')
-const { productsFake } = require('./fakerProducts')
-const Sale = require('../models/Sale.model')
+const { supp } = require('./faker.supplier')
+const Product = require('../models/Product.model')
+const { productsFake } = require('./faker.products')
 
 require('../config/db.config')
 
@@ -16,19 +15,20 @@ mongoose.connection.once('open', () => {
 
       for (let i = 0; i < 5; i++) {
         suppliers.push({
-          ...commerce[i],
+          ...supp[i],
           password: 'Elmercado21',
           CIF: '58358148P',
-          address: address[i],
-          ...owner[i],
+          iban: 09876543211234567890,
           active: true
         })
       }
 
       return Supplier.create(suppliers)
     })
-    .then((sup) => {
+    /* .then((sup) => { // JFK: SOLUCIONAR EL SUPP DEL PROD
       const products = []
+
+      for (let i = 0; i < productsFake.lenght; i++) {}
         products.push({
           supplier: sup[0]._id,
           ...productsFake[0]
@@ -38,21 +38,6 @@ mongoose.connection.once('open', () => {
           ...productsFake[1]
         })
       return Product.create(products)
-    })
-/*     .then((prod) => {
-      return Sale.create({
-        products: [
-          {
-            product: prod[0]._id,
-            quantity: 2,
-          },
-          {
-            product: prod[1]._id,
-            quantity: 5,
-          }
-        ],
-        user: '6078450fed238b34ebe8594x'
-      })
     }) */
     .then(() => console.log(`- All data created!`))
     .catch(error => console.error(error))

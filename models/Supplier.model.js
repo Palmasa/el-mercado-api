@@ -27,11 +27,11 @@ const supplierSchema = new mongoose.Schema(
       maxlength: [60, "El nombre del comercio es demasiado largo"],
       required: true
     },
-    categ: {
+    categ: [{
       type: String,
       required: true,
       enum: supplierCategs,
-    },
+    }],
     type: {
       type: String,
       required: true,
@@ -39,6 +39,9 @@ const supplierSchema = new mongoose.Schema(
     },
     imgs: {
       enum: [ String ],
+    },
+    logo: {
+      type: String
     },
     bio: {
       type: String,
@@ -75,6 +78,10 @@ const supplierSchema = new mongoose.Schema(
       number: Number,
       zip: Number,
     },
+    shipping: [{
+      province: String,
+      sendPrice: Number
+    }],
     certificates: [
       {
         img: String,
@@ -102,6 +109,10 @@ const supplierSchema = new mongoose.Schema(
       type: String,
       default: uuidv4(),
     },
+    slug: {
+      type: String,
+      required: true
+    }
   },
   {
     timestamps: true,

@@ -71,6 +71,19 @@ const productSchema = new mongoose.Schema(
         name: String,
       },
     ],
+    active: {
+      type: Boolean,
+      default: true
+    },
+    slug: {
+      type: String,
+      required: true
+    },
+    rank: Number,
+    boost: {
+      isBoosted: Boolean,
+      payment: Number,
+    }
   }, {
     timestamps: true,
     toJSON: {
