@@ -2,9 +2,11 @@ const createError = require('http-errors');
 const mongoose = require('mongoose')
 const Supplier = require("../models/Supplier.model");
 const Product = require("../models/Product.model");
+const calcs = require('../calcs/product.rank');
+const { slugGeneratorProduct } = require('../helpers/slug.generator');
 
 // Get all products
-module.exports.products = async (req, res, next) => {
+module.exports.getAll = async (req, res, next) => {
   const criteria = {}
   const { category, search } = req.query
 
@@ -15,6 +17,8 @@ module.exports.products = async (req, res, next) => {
   if (category) {
     criteria.categories = { '$in': [category] }
   }
+
+  criteria.active = true
   
   try { 
     const listProducts = await Product.find(criteria)
@@ -22,10 +26,25 @@ module.exports.products = async (req, res, next) => {
   } catch(e) { next(e) }
 }
 
+// Get one product
+module.exports.getOne = async (req, res, next) => {
+  try {
+    const product = await Product.findOne({ slug: req.params.slug, active: true })
+    if (!product) {
+      next(createError(404, 'Producto no encontrado'))
+    } else {
+      res.json(product)
+    }
+  } catch(e) {
+    next(e)
+  }
+}
+
 // Create product
 module.exports.create = async (req, res, next) => {
   req.body.supplier = req.currentUser
-
+  req.body.rank = calcs.rank
+  req.body.slug = slugGeneratorProduct(req.body.name, req.body.categ)
   if (req.files) {
     const arrFiles = []
     req.files.map(file => arrFiles.push(file.path))
@@ -101,6 +120,30 @@ module.exports.update = async (req, res, next) => {
     next(e)
   }
 
+}
+
+// Desactivate product
+module.exports.delete = async (req, res, next) => {
+
+  try {
+    const product = await Product.findById(req.params.id)
+    if (!product) {
+      next(createError(403))
+    } else if (product.supplier.toString() !== req.currentUser.toString()) {
+      next(createError(403))
+    } else {
+      
+      try {
+        const toDesactivate = await Product.findByIdAndUpdate({ _id: req.params.id }, { active: false }, { useFindAndModify: false })
+        res.status(201).json(toDesactivate)
+      } catch(e) {
+        next(e)
+      }
+
+    }
+  } catch(e) {
+    next(e)
+  }
 }
 
 // Delete product

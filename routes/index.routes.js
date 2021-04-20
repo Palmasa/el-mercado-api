@@ -8,6 +8,9 @@ const supplierController = require('../controllers/supplier.controller')
 // USERS
 
 // SUPPLIERS
+// ordenar suppliers por volumen de ventas
+// tiempo de entrega por zonas
+// multer single logo, array img
 router.get('/suppliers', supplierController.suppliers)
 
 // SALES

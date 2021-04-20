@@ -6,7 +6,8 @@ const roleMiddleware = require('../middlewares/role.middleware')
 const upload = require('../config/storage.config')
 
 // Get products
-router.get('/products', productController.products)
+router.get('/products', productController.getAll)
+router.get('/products/:slug', productController.getOne)
 
 // Create
 router.post(
@@ -24,6 +25,15 @@ router.post(
   roleMiddleware.isSupplier,
   upload.array('img'),
   productController.update
+)
+
+// Desactivate
+router.post(
+  '/product/desactivate/:id',
+  authMiddleware.isAuthenticated,
+  roleMiddleware.isSupplier,
+  upload.array('img'),
+  productController.desactivate
 )
 
 // Delete
