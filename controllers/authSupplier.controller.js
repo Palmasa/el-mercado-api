@@ -16,7 +16,7 @@ module.exports.registrationSupplier = async (req, res, next) => {
     : next(createError(400, { errors: { email: 'Email registrado como vendedor' }}))
   } else {
     try {
-      const supplierCreated = await Supplier.create(req.body)
+      const supplierCreated = await Supplier.create(req.body, { new: true })
       mailer.sendActivationEmailSupplier(supplierCreated.email, supplierCreated.token)
       res.status(201).json({ message: "Vendedor registrado"})
     } catch(e) {
@@ -34,7 +34,7 @@ module.exports.activateSupplier = async (req, res, next) => {
   const { token } = req.params
 
   try {
-    const user = await Supplier.findOneAndUpdate({ token }, { active: true }, { useFindAndModify: false })
+    const user = await Supplier.findOneAndUpdate({ token }, { active: true }, { new: true, useFindAndModify: false })
     if (user) {
       res.status(201).json({ message: "Venedor activado" })
     } else {

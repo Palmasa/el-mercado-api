@@ -11,14 +11,6 @@ router.get('/suppliers/:slug', supplierController.getOne)
 
 // Create suppliers ---> multer single logo, array img
 
-// Create and edit shipping
-router.post(
-  '/edit-shipping',
-  authMiddleware.isAuthenticated,
-  roleMiddleware.isSupplier,
-  supplierController.editShipping
-)
-
 // Edit supplier
 
 // Config supplier (email, password)
