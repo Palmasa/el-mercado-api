@@ -1,6 +1,5 @@
 const mongoose = require('mongoose')
 const { productCategs } = require("../constants/productCategs")
-const { sendTimes } = require('../constants/sendTimes')
 
 const productSchema = new mongoose.Schema(
   {
@@ -8,6 +7,11 @@ const productSchema = new mongoose.Schema(
       type: mongoose.Types.ObjectId,
       required: 'Se necesita un vendedor para publicar un producto',
       ref: 'Supplier'
+    },
+    shipping: {
+      type: mongoose.Types.ObjectId,
+      required: 'Se necesita un modelo de envío para publicar un producto',
+      ref: 'Shipping'
     },
     name: {
       type: String,
@@ -54,17 +58,6 @@ const productSchema = new mongoose.Schema(
       type: Number,
       required: true
     },
-    sendPrice: {
-      type: Number,
-    },
-    sendPriceDiscount: {
-      type: Number // price from 0€
-    },
-    sendTime: {
-      type: String,
-      required: true,
-      enum: sendTimes
-    },
     certificates: [
       {
         img: String,
@@ -79,7 +72,6 @@ const productSchema = new mongoose.Schema(
       type: String,
       required: true
     },
-    rank: Number,
     boost: {
       isBoosted: Boolean,
       payment: Number,
@@ -104,6 +96,7 @@ productSchema.virtual('sales', {
   foreignField: 'product',
   localField: '_id',
 })
+
 productSchema.virtual('cart', {
   ref: 'Cart',
   foreignField: 'product',

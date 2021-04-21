@@ -14,8 +14,8 @@ module.exports.registration = async (req, res, next) => {
     ? next(createError(400, { errors: { email: 'Este email ya está registrado' }}))
     : next(createError(400, { errors: { email: 'Email registrado como vendedor' }}))
   } else {
-    const userCreated = await User.create(req.body)
     try {
+      const userCreated = await User.create(req.body, { new: true })
       mailer.sendActivationEmail(userCreated.email, userCreated.token)
       res.status(201).json({ message: "Usuario registrado"})
     } catch (e) {
@@ -32,7 +32,7 @@ module.exports.activate = async (req, res, next) => {
   const { token } = req.params
 
   try {
-    const user = await User.findOneAndUpdate({ token }, { active: true }, { useFindAndModify: false })
+    const user = await User.findOneAndUpdate({ token }, { active: true }, { new: true, useFindAndModify: false })
     if (user) {
       res.status(201).json({ message: "Usuario activado" })
     } else {

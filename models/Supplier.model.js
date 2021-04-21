@@ -78,10 +78,6 @@ const supplierSchema = new mongoose.Schema(
       number: Number,
       zip: Number,
     },
-    shipping: [{
-      province: String,
-      sendPrice: Number
-    }],
     certificates: [
       {
         img: String,
@@ -132,6 +128,12 @@ const supplierSchema = new mongoose.Schema(
 // Virtuals -----------------------
 supplierSchema.virtual('products', {
   ref: 'Product',
+  foreignField: 'supplier',
+  localField: '_id',
+})
+
+supplierSchema.virtual('shippings', {
+  ref: 'Shipping',
   foreignField: 'supplier',
   localField: '_id',
 })
