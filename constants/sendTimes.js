@@ -4,5 +4,6 @@ module.exports.sendTimes = [
   '2/3 días laborables',
   '3/5 días laborables',
   'Una semana',
+  '10 días laborables',
   'Dos semanas', 
 ]

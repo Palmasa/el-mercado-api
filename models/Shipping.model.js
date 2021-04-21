@@ -14,7 +14,7 @@ const shippingSchema = new mongoose.Schema(
     shipping: [{
       province: String,
       sendPrice: Number,
-      sendTime: sendTimes,
+      sendTime: String,
       sendDisccount: Number, // price from 0€
     }],
     name: {
