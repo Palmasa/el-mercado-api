@@ -79,7 +79,6 @@ const supplierSchema = new mongoose.Schema(
     },
     certificates: [
       {
-        img: String,
         name: String,
       },
     ],

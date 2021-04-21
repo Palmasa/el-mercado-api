@@ -10,9 +10,16 @@ const upload = require('../config/storage.config')
 router.get('/suppliers', hasZipMiddleware.hasZip, supplierController.getAll)
 router.get('/suppliers/:slug', supplierController.getOne)
 
-// Create suppliers ---> multer single logo, array img
-
-// Edit supplier
+// Edit supplier profile
+router.post(
+  '/edit-profile/:slug',
+  authMiddleware.isAuthenticated,
+  roleMiddleware.isSupplier,
+  upload.single('logo'),
+  upload.array('imgs'),
+  upload.single('owner[img]'),
+  supplierController.editProfile
+)
 
 // Config supplier (email, password)
 

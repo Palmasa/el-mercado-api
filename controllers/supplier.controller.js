@@ -1,4 +1,3 @@
-const { slugGeneratorSupplier } = require("../helpers/slug.generator")
 const Supplier = require("../models/Supplier.model")
 const createError = require('http-errors');
 const mongoose = require('mongoose');
@@ -48,9 +47,29 @@ module.exports.getOne = async (req, res, next) => {
   }
 }
 
-module.exports.create = async (req, res, next) => {
+// Edit: Name, categ, type, imgs, logo, bio, address, certificates, owner (name, bio, img)
+module.exports.editProfile = async (req, res, next) => {
   
-  req.body.slug = slugGeneratorSupplier(req.body.name, req.body.categ)
-  req.body.shipping = []
+  if (req.files) {
+    /*  const arrFiles = []
+    req.files.map(file => arrFiles.push(file.path))
+    req.body.imgs = arrFiles */
+    console.log(req.files)
+  }
+  
+  try {
+    const supp = await Supplier.findOneAndUpdate(
+      { slug: req.params.slug },
+      req.body,
+      { new: true, useFindAndModify: false }
+    )
+      res.status(201).json(supp)
+  } catch(e) {
+    next(e)
+  }
 }
+
+// email, password, cif, iban
+
+
 
