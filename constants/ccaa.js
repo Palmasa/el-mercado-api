@@ -75,7 +75,7 @@ module.exports.provinces = [
   'Zaragoza',
 ]
 
-module.exports.zip = {
+module.exports.zipData = {
   'A Coruña': 15,
   'Álava': 01,
   'Albacete': 02,

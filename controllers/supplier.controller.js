@@ -1,5 +1,7 @@
 const { slugGeneratorSupplier } = require("../helpers/slug.generator")
 const Supplier = require("../models/Supplier.model")
+const createError = require('http-errors');
+const mongoose = require('mongoose');
 
 // Get all suppliers
 // JFK: ordenar suppliers por volumen de ventas
@@ -18,7 +20,16 @@ module.exports.getAll = async (req, res, next) => {
   criteria.active = true
 
   try { 
-    const listSuppliers = await Supplier.find(criteria)
+    const listSuppliers = await Supplier.find(criteria).populate('shippings')
+
+    /* if (req.currentZip) {
+      listSuppliers.map((supp) => supp.shippings
+      .map((ship) => ship.shipping
+      .map((prov) => )))
+      
+      listSuppliers.filter((supp) => supp.shippings)
+    } */
+
     res.json(listSuppliers)
   }
   catch { next }

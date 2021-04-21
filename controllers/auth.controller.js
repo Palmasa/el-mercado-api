@@ -64,8 +64,10 @@ module.exports.login = async (req, res, next) => {
           {
             expiresIn: '1d'
           }
-        )
-      })
+        ),
+        zDec: user.address.zip // JFK
+      }
+      )
     }
   }
 }
