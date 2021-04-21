@@ -50,7 +50,6 @@ const supplierSchema = new mongoose.Schema(
     },
     CIF: {
       type: String,
-      required: true,
       maxlength: [ 9, "El cif debe contener la letra en mayúsculas seguido sin espacio de 8 números" ],
       minlenght: [9,"El cif debe contener la letra en mayúsculas seguido sin espacio de 8 números" ],
     },
@@ -80,7 +79,6 @@ const supplierSchema = new mongoose.Schema(
     },
     certificates: [
       {
-        img: String,
         name: String,
       },
     ],

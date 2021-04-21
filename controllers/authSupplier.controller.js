@@ -4,6 +4,7 @@ const jwt = require('jsonwebtoken')
 const User = require("../models/User.model")
 const Supplier = require("../models/Supplier.model")
 const mailer = require('../config/mailer.config')
+const { slugGeneratorSupplier } = require("../helpers/slug.generator")
 
 module.exports.registrationSupplier = async (req, res, next) => {
   const { email } = req.body
@@ -16,12 +17,14 @@ module.exports.registrationSupplier = async (req, res, next) => {
     : next(createError(400, { errors: { email: 'Email registrado como vendedor' }}))
   } else {
     try {
-      const supplierCreated = await Supplier.create(req.body, { new: true })
+
+      req.body.slug = slugGeneratorSupplier(req.body.name, req.body.categ)
+
+      const supplierCreated = await Supplier.create(req.body)
       mailer.sendActivationEmailSupplier(supplierCreated.email, supplierCreated.token)
       res.status(201).json({ message: "Vendedor registrado"})
     } catch(e) {
       if (e instanceof mongoose.Error.ValidationError) {
-        console.log(e)
         next(createError(401, { errors: { email: 'Email inválido', password: 'Contraseña inválida', CIF: 'CIF inválido', categ: 'Categoría inválida', name: 'Nombre requerido', type: 'Modelo de comercio requerido'}}))
       } else {
         next(e)
