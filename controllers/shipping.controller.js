@@ -22,24 +22,27 @@ module.exports.create = async (req, res, next) => {
     "provincesSelected": ["A Coruña", "Albacete"], (si se elige la op de byProvinces)
     "ccaaSelected": ["Asturias", "País Vasco"], (si se elige la op de byCCAA)
     "price": "100", es el precio que tendrán las por defecto a no ser que se indique lo contrario en el siguiente campo
+    "sendTime": "3/5 días laborables",
+    "sendDisccount": "50",
     "differentPrices": [
-        { "province": "A Coruña", "price": "0" },
+        { "province": "A Coruña", "time": "Una semana" },
         { "province": "Albacete",  "price": "478900" }
     ]
   } */
-  let ship = shipping(req.body.price)
+  let ship = shipping(req.body.price, req.body.sendTime, req.body.sendDisccount)
 
-  // Price
-  if (req.body.differentPrices.lenght !== 0) {
+  // Price && sendTime
+  if (req.body.different.lenght !== 0) {
     req.body.shipping = ship.map((obj) => {
-      req.body.differentPrices.map((p) => {
+      req.body.different.map((p) => {
         if (obj.province === p.province) {
-          obj.sendPrice = p.price
+          obj.sendPrice = p.price || req.body.price
+          obj.sendTime = p.time || req.body.sendTime
         }
       })
     })
   }
-  
+
   // Filter provinces
   let option = [] // op 1 -> todo el territorio nacional
   // op 2 -> solo peninsula
@@ -87,14 +90,15 @@ module.exports.create = async (req, res, next) => {
 
 // Edit shipping
 module.exports.edit = async (req, res, next) => {
-  let ship = shipping(req.body.price)
+  let ship = shipping(req.body.price, req.body.sendTime, req.body.sendDisccount)
 
-  // Price
-  if (req.body.differentPrices.lenght !== 0) {
+  // Price && sendTime
+  if (req.body.different.lenght !== 0) {
     req.body.shipping = ship.map((obj) => {
-      req.body.differentPrices.map((p) => {
+      req.body.different.map((p) => {
         if (obj.province === p.province) {
-          obj.sendPrice = p.price
+          obj.sendPrice = p.price || req.body.price
+          obj.sendTime = p.time || req.body.sendTime
         }
       })
     })
