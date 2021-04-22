@@ -11,22 +11,21 @@ router.get('/suppliers', hasZipMiddleware.hasZip, supplierController.getAll)
 router.get('/suppliers/:slug', supplierController.getOne)
 
 // Edit supplier profile
-router.post(
+router.patch(
   '/edit-profile/:slug',
   authMiddleware.isAuthenticated,
   roleMiddleware.isSupplier,
-  upload.single('logo'),
-  upload.array('imgs'),
-  upload.single('owner[img]'),
+  upload.fields([
+    { name: 'logo', maxCount: 1 },
+    { name: 'imgs', maxCount: 4 },
+    { name: 'ownerImg', maxCount: 1 }
+  ]),
   supplierController.editProfile
 )
 
 // Config supplier (email, password)
 
-// Delete supplier (desactivate ? )
+// Delete supplier
 
-// STATISTICS ========================================================================
-// Get allSales
-// ...
 
 module.exports = router;

@@ -3,8 +3,8 @@ module.exports.slugGeneratorProduct = (name, categ) => {
   let randomNum = `${Math.floor(Math.random() * 10) + 1}${Math.floor(Math.random() * 10) + 1}${Math.floor(Math.random() * 10) + 1}${Math.floor(Math.random() * 10) + 1}`
   return (
     name.includes(' ')
-    ? slug = `${randomNum}-${categ}-${name.split(' ').join('-')}`
-    : slug = `${randomNum}-${categ}-${name}`
+    ? slug = `${randomNum}-${(categ).toLowerCase()}-${(name).toLowerCase().split(' ').join('-')}`
+    : slug = `${randomNum}-${(categ).toLowerCase()}-${(name).toLowerCase()}`
   )
 }
 

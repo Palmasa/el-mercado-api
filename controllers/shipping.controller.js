@@ -7,8 +7,21 @@ const Supplier = require("../models/Supplier.model")
 // Get shipping per supplier
 module.exports.get = async (req, res, next) => {
   try {
-    const supp = await Supplier.findById(req.currentUser).populate('shippings')
+    const supp = await Supplier.findById(req.currentUser)
+    .populate('shippings')
+    //.populate({ path: 'shippings', populate: { path: 'products' } })
     res.json(supp.shippings)
+  } catch(e) {
+    next(e)
+  }
+}
+
+//Get one shipping
+module.exports.getOne = async (req, res, next) => {
+  try {
+    const ship = await Shipping.findById(req.params.id)
+    //.populate('products')
+    res.json(ship)
   } catch(e) {
     next(e)
   }
@@ -16,19 +29,6 @@ module.exports.get = async (req, res, next) => {
 
 // Create shipping
 module.exports.create = async (req, res, next) => {
-  /* !! LO QUE TIENE QUE LLEGAR DE REACT !!
-  {
-    "selected": "diferentes opt comentadas en el controlador",
-    "provincesSelected": ["A Coruña", "Albacete"], (si se elige la op de byProvinces)
-    "ccaaSelected": ["Asturias", "País Vasco"], (si se elige la op de byCCAA)
-    "price": "100", es el precio que tendrán las por defecto a no ser que se indique lo contrario en el siguiente campo
-    "sendTime": "3/5 días laborables",
-    "sendDisccount": "50",
-    "differentPrices": [
-        { "province": "A Coruña", "time": "Una semana" },
-        { "province": "Albacete",  "price": "478900" }
-    ]
-  } */
   let ship = shipping(req.body.price, req.body.sendTime, req.body.sendDisccount)
 
   // Price && sendTime
@@ -172,7 +172,7 @@ module.exports.delete = async (req, res, next) => {
 
       try {
         const toDelete = await Shipping.findByIdAndDelete(req.params.id)
-        res.status(200).json({ message: `${toDelete.name} successfully deleted`})
+        res.status(200).json({ message: `${toDelete.name} se ha eliminado`})
       } catch(e) {
         next(e)
       }

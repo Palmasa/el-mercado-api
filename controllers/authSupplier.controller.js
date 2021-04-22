@@ -19,7 +19,33 @@ module.exports.registrationSupplier = async (req, res, next) => {
     try {
 
       req.body.slug = slugGeneratorSupplier(req.body.name, req.body.categ)
-
+      if (req.files) {
+        if (req.files.imgs) {
+          const arrImgs = []
+          req.files.imgs.map(file => arrImgs.push(file.path))
+          req.body.imgs = arrImgs
+        }
+        if (req.files.logo) {
+          const strLogo = req.files.logo[0].path
+          req.body.logo = strLogo
+        }
+        if (req.files.ownerImg) {
+          const arrImgs = req.files.ownerImg[0].path
+          req.body.owner = {
+            bio: req.body.ownerBio,
+            name: req.body.ownerName,
+            img: arrImgs,
+          }
+        }
+      }
+      req.body.address = {
+        CA: req.body.ccaa,
+        province: req.body.province,
+        city: req.body.city,
+        street: req.body.street,
+        number: req.body.number,
+        zip: req.body.zip,
+      }
       const supplierCreated = await Supplier.create(req.body)
       mailer.sendActivationEmailSupplier(supplierCreated.email, supplierCreated.token)
       res.status(201).json({ message: "Vendedor registrado"})

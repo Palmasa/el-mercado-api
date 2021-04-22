@@ -60,7 +60,6 @@ const productSchema = new mongoose.Schema(
     },
     certificates: [
       {
-        img: String,
         name: String,
       },
     ],

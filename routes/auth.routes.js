@@ -1,4 +1,3 @@
-const { Router } = require('express')
 const express = require('express')
 const router = express.Router()
 const authController = require('../controllers/auth.controller')
@@ -15,9 +14,11 @@ router.get('/users/me', authMiddleware.isAuthenticated, authController.get)
 // SUPPLIER
 router.post(
   '/vendor/registration',
-  upload.single('logo'),
-  upload.array('imgs'),
-  upload.single('owner[img]'),
+  upload.fields([
+    { name: 'logo', maxCount: 1 },
+    { name: 'imgs', maxCount: 4 },
+    { name: 'owner[imgs]', maxCount: 1 }
+  ]),
   authSupplierController.registrationSupplier
 )
 router.get('/vendor/activate/:token', authSupplierController.activateSupplier)
