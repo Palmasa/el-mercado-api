@@ -6,10 +6,18 @@ const roleMiddleware = require('../middlewares/role.middleware')
 
 // Get shippings per supplier
 router.get(
-  '/get-shipping',
+  '/get-all-shippings',
   authMiddleware.isAuthenticated,
   roleMiddleware.isSupplier,
   shippingController.get
+)
+
+// Get one shipping
+router.get(
+  '/get-shippings/:id',
+  authMiddleware.isAuthenticated,
+  roleMiddleware.isSupplier,
+  shippingController.getOne
 )
 
 // Create shipping

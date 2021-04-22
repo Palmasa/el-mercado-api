@@ -15,7 +15,7 @@ module.exports.registration = async (req, res, next) => {
     : next(createError(400, { errors: { email: 'Email registrado como vendedor' }}))
   } else {
     try {
-      const userCreated = await User.create(req.body, { new: true })
+      const userCreated = await User.create(req.body)
       mailer.sendActivationEmail(userCreated.email, userCreated.token)
       res.status(201).json({ message: "Usuario registrado"})
     } catch (e) {

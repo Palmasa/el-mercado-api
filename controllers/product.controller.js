@@ -2,26 +2,29 @@ const createError = require('http-errors');
 const mongoose = require('mongoose')
 const Product = require("../models/Product.model");
 const Shipping = require('../models/Shipping.model');
-const calcs = require('../calcs/product.rank');
 const { slugGeneratorProduct } = require('../helpers/slug.generator');
 
 // Get all products
 module.exports.getAll = async (req, res, next) => {
   const criteria = {}
   const { categ, search } = req.query
-
-  if (search) {
-    criteria.name = new RegExp(search, 'i')
-  }
-
-  if (categ) {
-    criteria.categ = { '$in': [categ] }
-  }
-
+  if (search) criteria.name = new RegExp(search, 'i')
+  if (categ) criteria.categ = { '$in': [categ] }
   criteria.active = true
   
-  try { 
+  try {
     const listProducts = await Product.find(criteria)
+    //JFK
+    /* let okToSend let yesSend = [] let noSend = []
+    if (req.currentZip) {
+      listProducts.map((prod) => {
+        const ship = await Shipping.findById(prod.shipping)
+        okToSend = ship.shipping.some((el) => el.province === req.currentZip)
+        if (okToSend) { yesSend.push(prod) } else { noSend.push(prod) }
+      })
+    } */
+    // res.json({yesSend, noSend})
+
     res.json(listProducts)
   } catch(e) { next(e) }
 }
@@ -29,11 +32,33 @@ module.exports.getAll = async (req, res, next) => {
 // Get one product
 module.exports.getOne = async (req, res, next) => {
   try {
-    const product = await Product.findOne({ slug: req.params.slug })
+    const product = await Product.findOne({ slug: req.params.slug, active: true })
+
     if (!product) {
       next(createError(404, 'Producto no encontrado'))
     } else {
-      res.json(product)
+
+      let okToSend
+      if (req.currentZip) {
+        const ship = await Shipping.findById(product.shipping)
+        okToSend = ship.shipping.some((el) => el.province === req.currentZip)
+      }
+      res.json({product, okToSend})
+    }
+  } catch(e) {
+    next(e)
+  }
+}
+
+// Get X to recommend
+module.exports.getRecommend = async (req, res, next) => {
+  try {
+    const product = await Product.find({ supplier: req.body.supplierId , active: true }).limit(5)
+
+    if (!product) {
+      next(createError(404, 'Productos no encontrados'))
+    } else {
+      res.json(products)
     }
   } catch(e) {
     next(e)
@@ -41,11 +66,8 @@ module.exports.getOne = async (req, res, next) => {
 }
 
 // Create product
-// imp! (you will need it in the view)  ->
-// to create a product you need to find the shippings of the current supplier for lines 57 and 58
 module.exports.create = async (req, res, next) => {
   req.body.supplier = req.currentUser
-  req.body.rank = calcs.rank
   req.body.slug = slugGeneratorProduct(req.body.name, req.body.categ)
   if (req.files) {
     const arrFiles = []
@@ -87,7 +109,7 @@ module.exports.create = async (req, res, next) => {
   } catch(e){ next(e) }
 }
 
-// Edit product ++Boost product
+// Edit product
 module.exports.update = async (req, res, next) => {
   req.body.supplier = req.currentUser
 
@@ -167,6 +189,29 @@ module.exports.desactivate = async (req, res, next) => {
   }
 }
 
+// Reactivate
+module.exports.reactivate = async (req, res, next) => {
+  try {
+    const product = await Product.findById(req.params.id)
+    if (!product) {
+      next(createError(403))
+    } else if (product.supplier.toString() !== req.currentUser.toString()) {
+      next(createError(403))
+    } else {
+      
+      try {
+        const toDesactivate = await Product.findByIdAndUpdate({ _id: req.params.id }, { active: true, stock: req.body.stock }, { new: true, useFindAndModify: false })
+        res.status(201).json(toDesactivate)
+      } catch(e) {
+        next(e)
+      }
+
+    }
+  } catch(e) {
+    next(e)
+  }
+}
+
 // Delete product
 module.exports.delete = async (req, res, next) => {
 
@@ -179,8 +224,8 @@ module.exports.delete = async (req, res, next) => {
     } else {
       
       try {
-        const toDelete = await Product.findByIdAndDelete(req.params.id, { new: true})
-        res.status(200).json({ message: `${toDelete.name} successfully deleted`})
+        const toDelete = await Product.findByIdAndDelete(req.params.id)
+        res.status(200).json({ message: `${toDelete.name} eliminado`})
       } catch(e) {
         next(e)
       }
@@ -189,4 +234,43 @@ module.exports.delete = async (req, res, next) => {
   } catch(e) {
     next(e)
   }
+}
+
+module.exports.boost = async (req, res, next) => {
+  try {
+    const product = await Product.findById(req.params.id)
+    if (!product) {
+      next(createError(403))
+    } else if (product.supplier.toString() !== req.currentUser.toString()) {
+      next(createError(403))
+    } else {
+
+      req.body.boost = {
+        isBoosted: true,
+        payment: req.body.payment
+      }
+
+      try {
+        const editedProduct = await Product.findByIdAndUpdate(
+          { _id: req.params.id },
+          req.body, 
+          { new: true, useFindAndModify: false })
+        res.status(201).json(editedProduct)
+      } catch(e) { next(e) }
+
+    }
+
+   } catch(e) { next(e) }
+    
+}
+
+module.exports.getBoosted = async (req, res, next) => {
+  try {
+    const boostedProducts = await Product.find({"boost.isBoosted": true}).sort({ "boost.payment": -1 })
+    if (!boostedProducts) {
+      next(createError(404, 'No hay productos boosted'))
+    } else {
+      res.json(boostedProducts)
+    }
+  } catch(e) { next(e) }
 }

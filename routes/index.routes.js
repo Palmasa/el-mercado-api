@@ -7,8 +7,6 @@ const zipController = require('../controllers/zip.controller')
 // Zip
 router.post('/create-zip', zipController.zip)
 
-// USERS
-
 // SALES
 router.post('/sale', saleController.createSale)
 
