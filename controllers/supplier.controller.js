@@ -30,6 +30,11 @@ module.exports.getOne = async (req, res, next) => {
 
 // Edit: Name, categ, type, imgs, logo, bio, address, certificates, owner (name, bio, img)
 module.exports.editProfile = async (req, res, next) => {
+  req.body.owner = {
+    bio: req.body.ownerBio,
+    name: req.body.ownerName,
+  }
+  
   if (req.files) {
     if (req.files.imgs) {
       const arrImgs = []
@@ -71,9 +76,59 @@ module.exports.editProfile = async (req, res, next) => {
   }
 }
 
-// email, password, cif, iban
+module.exports.changeEmail = async (req, res, next) => {
+  try {
+    const supp = await Supplier.findByIdAndUpdate(req.currentUser, { active: false, email: req.body.newEmail }, { new: true, useFindAndModify: false })
+    mailer.sendChangeEmail(req.body.newEmail, supp.token)
 
-// supplier delete
+    res.json({ message: `Se ha enviado un email de confirmación a ${req.body.newEmail}`})
+  } catch(e) { next(e) }
+}
+
+module.exports.activateNewEmail = async (req, res, next) => {
+  const { token } = req.params
+  try {
+    const suppf = await Supplier.find({ token })
+    if (!suppf) {
+      next(createError(404, 'Vendedor no encontrado'))
+    } else {
+      const supp = await Supplier.findOneAndUpdate( { token }, { active: true }, { new: true, useFindAndModify: false })
+      res.json(supp)
+    }
+  } catch(e) { next(e) }
+}
+
+module.exports.changePassword = async (req, res, next) => {
+  try {
+    const supp = await Supplier.findOneAndUpdate({ _id: req.currentUser}, { active: false, password: req.body.newPassword }, { new: true, useFindAndModify: false })
+    mailer.sendChangePassword(supp.email, supp.token)
+
+    res.json({ message: `Le hemos enviado un email para confirmar su identidad`})
+  } catch(e) { next(e) }
+}
+
+module.exports.activateNewPassword = async (req, res, next) => {
+  const { token } = req.params
+  try {
+    const suppf = await Supplier.find({ token })
+    if (!suppf) {
+      next(createError(404, 'Vendedor no encontrado'))
+    } else {
+      const supp = await Supplier.findOneAndUpdate( { token }, { active: true }, { new: true, useFindAndModify: false })
+      res.json(supp)
+    }
+  } catch(e) { next(e) }
+}
+
+module.exports.delete = async (req, res, next) => { 
+
+  try {
+    const toDelete = await Supplier.findByIdAndDelete(req.currentUser)
+    res.status(200).json({ message: `${toDelete.name}, su cuenta ha sido eliminada`})
+  } catch(e) {
+    next(e)
+  }
+}
 
 
 

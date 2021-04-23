@@ -12,7 +12,7 @@ router.get('/suppliers/:slug', supplierController.getOne)
 
 // Edit supplier profile
 router.patch(
-  '/edit-profile/:slug',
+  '/edit-vendor-profile/:slug',
   authMiddleware.isAuthenticated,
   roleMiddleware.isSupplier,
   upload.fields([
@@ -24,8 +24,37 @@ router.patch(
 )
 
 // Config supplier (email, password)
+router.post(
+  '/edit-vendor-email',
+  authMiddleware.isAuthenticated,
+  roleMiddleware.isSupplier,
+  supplierController.changeEmail
+)
+
+router.get(
+  '/activate-new-vendor-email/:token',
+  supplierController.activateNewEmail
+)
+
+router.post(
+  '/edit-vendor-pass',
+  authMiddleware.isAuthenticated,
+  roleMiddleware.isSupplier,
+  supplierController.changePassword
+)
+
+router.get(
+  '/activate-new-vendor-pass/:token',
+  supplierController.activateNewPassword
+)
 
 // Delete supplier
+router.delete(
+  '/delete-vendor-perm',
+  authMiddleware.isAuthenticated,
+  roleMiddleware.isSupplier,
+  supplierController.delete
+)
 
 
 module.exports = router;
