@@ -2,7 +2,9 @@ const createError = require('http-errors')
 const jwt = require('jsonwebtoken')
 const User = require("../models/User.model")
 const Supplier = require("../models/Supplier.model")
+const Cart = require("../models/Cart.model")
 const mailer = require('../config/mailer.config')
+const { zipFinder } = require('../helpers/zipFinder')
 
 module.exports.registration = async (req, res, next) => {
   const { email } = req.body
@@ -57,6 +59,12 @@ module.exports.login = async (req, res, next) => {
     } else if (match && !user.active) {
       next(createError(404, { errors: { email: 'Su cuenta no está activa, por favor revise su email' }}))
     } else {
+      
+      let cart, zip
+      const hasCart = await Cart.findOne({ user: user._id })
+      if (hasCart) { cart = hasCart._id }
+      if (user.address.zip) { zip = zipFinder(user.address.zip)}
+
       res.json({ 
         access_token: jwt.sign(
           { id: user._id },
@@ -65,7 +73,8 @@ module.exports.login = async (req, res, next) => {
             expiresIn: '1d'
           }
         ),
-        zDec: user.address.zip // JFK
+        zDec: zip,
+        cart
       }
       )
     }
