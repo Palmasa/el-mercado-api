@@ -3,6 +3,9 @@ const Supplier = require('../models/Supplier.model')
 const { supp } = require('./faker.supplier')
 const Product = require('../models/Product.model')
 const { productsFake } = require('./faker.products')
+const Shipping = require('../models/Shipping.model')
+const { fakeShippins } = require('./faker.shippings')
+const {slugGeneratorProduct} = require('../helpers/slug.generator')
 
 require('../config/db.config')
 
@@ -25,19 +28,33 @@ mongoose.connection.once('open', () => {
 
       return Supplier.create(suppliers)
     })
-    /* .then((sup) => { // JFK: SOLUCIONAR EL SUPP DEL PROD
-      const products = []
-
-      for (let i = 0; i < productsFake.lenght; i++) {}
-        products.push({
-          supplier: sup[0]._id,
-          ...productsFake[0]
-        })
-        products.push({
-          supplier: sup[1]._id,
-          ...productsFake[1]
-        })
-      return Product.create(products)
+    /* .then((sup) => {
+      const shipps = []
+      shipps.push({
+        ...fakeShippins[0],
+        supplier: sup[0]._id
+      })
+      shipps.push({
+        ...fakeShippins[1],
+        supplier: sup[1]._id
+      })
+      return Shipping.create(shipps)
+      .then((ship) => {
+        const products = []
+          products.push({
+            shipping: ship[0]._id,
+            supplier: sup[0]._id,
+            ...productsFake[0],
+            slug: slugGeneratorProduct(productsFake[0].name, productsFake[0].categ)
+          })
+          products.push({
+            shipping: ship[1]._id,
+            supplier: sup[1]._id,
+            ...productsFake[1],
+            slug: slugGeneratorProduct(productsFake[1].name, productsFake[1].categ)
+          })
+        return Product.create(products)
+      })
     }) */
     .then(() => console.log(`- All data created!`))
     .catch(error => console.error(error))

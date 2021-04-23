@@ -9,14 +9,20 @@ const cartSchema = new mongoose.Schema(
           required: true,
           ref: 'Product',
         },
-        quantity: Number
+        name: String,
+        price: Number,
+        img: String,
+        quantity: Number,
+        supplier: String,
+        supplierId: String,
+        sendPrice: Number,
       }
     ],
     user: {
       type: mongoose.Types.ObjectId,
-      required: true,
       ref: 'User'
-    }
+    },
+    total: Number
   },
   {
     timestamps: true,
