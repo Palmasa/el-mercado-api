@@ -62,7 +62,7 @@ module.exports.login = async (req, res, next) => {
       
       let cart, zip
       const hasCart = await Cart.findOne({ user: user._id })
-      if (hasCart) { cart = hasCart._id }
+      if (hasCart) { cart = hasCart._id } 
       if (user.address.zip) { zip = zipFinder(user.address.zip)}
 
       res.json({ 
