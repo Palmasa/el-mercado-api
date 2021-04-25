@@ -1,5 +1,7 @@
 const nodemailer = require('nodemailer')
 require('dotenv').config()
+const { billGenerator, billPdf } = require('../helpers/bill.generator')
+const path = require('path');
 
 const transporter = nodemailer.createTransport({
     service: '1und1',
@@ -58,5 +60,58 @@ module.exports.sendChangePassword = (email, token) => {
     subject: 'Confirme su identidad',
     text: `Confirma tu nuevo correo electrónico en http://localhost:3001/api/activate-new-user-pass/${token}`,
     html: `<p>Gracias por registrarte en El Mercado como vendedor <a href="http://localhost:3001/api/activate-new-user-pass/${token}">Click</a> http://localhost:3001/api/activate-new-user-pass/${token}</p>`
+  })
+}
+
+module.exports.sendSaleUser = async (email, cart, address, total) => {
+  billPdf(cart, total)
+  setTimeout(() => {
+    transporter
+    .sendMail({
+      from: `"El Mercado" <ines@el-mercado.es>`,
+      to: email,
+      subject: 'Gracias por su compra',
+      html: `<p>Gracias por su compra: </p>
+      <ul>${billGenerator(cart)}</ul>
+      <p>Total: ${total}€</p>
+      <p>Dirección de entrega: ${address}</p>`,
+      attachments: [ {
+        filename: 'factura-el-mercado.pdf',
+        path: path.join(__dirname, '../factura-el-mercado.pdf'),
+        contentType: 'application/pdf'
+      }]
+    })
+  }, 5000)
+}
+
+module.exports.sendSaleSupplier = (email, cart, total, address) => {
+  transporter
+  .sendMail({
+    from: `"El Mercado" <ines@el-mercado.es>`,
+    to: email,
+    subject: 'Tiene un nuevo encargo',
+    html: `<p><Envío a ${address}</p>
+    <ul>${billGenerator(cart)}</ul>
+    <p>Total: ${total}€</p>`
+  })
+}
+
+module.exports.sendEmailUserFromSupp = (email, subject, message) => {
+  transporter
+  .sendMail({
+    from: `"El Mercado" <ines@el-mercado.es>`,
+    to: email,
+    subject: `${subject}`,
+    html: `<p>${message}</p>`
+  })
+}
+
+module.exports.sendSaleDone = (email, supplier, products, urlReview) => {
+  transporter
+  .sendMail({
+    from: `"El Mercado" <ines@el-mercado.es>`,
+    to: email,
+    subject: `Su pedido de ${supplier} ha sido entregado`,
+    html: `<p>${products}<a href=${urlReview}>Opina sobre el pedido</a></p>`
   })
 }

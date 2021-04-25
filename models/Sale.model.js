@@ -9,23 +9,48 @@ const saleSchema = new mongoose.Schema(
           required: true,
           ref: 'Product',
         },
+        name: String,
+        price: Number,
+        img: String,
         quantity: Number,
-        state: {
-          type: String,
-          enum: [ 'Procesando', 'Aceptado', 'Denegado', 'Enviado', 'Entregado' ],
-          default: 'Procesando'
-        }
+        supplier: String,
+        supplierId: String,
+        sendPrice: Number
       }
     ],
+    state: {
+      type: String,
+      enum: [ 'Procesando', 'Aceptado', 'Denegado', 'Cancelado', 'Preparando', 'Enviado', 'Entregado' ],
+      default: 'Procesando'
+    },
+    address: {
+      country: {
+        type: String,
+        default: "España",
+      },
+      CA: String,
+      province: String,
+      city: String,
+      street: String,
+      number: Number,
+      zip: Number,
+    },
     user: {
       type: mongoose.Types.ObjectId,
       required: true,
       ref: 'User'
     },
-    payed: {
+    supplier: {
+      type: mongoose.Types.ObjectId,
+      required: true,
+      ref: 'Supplier'
+    },
+    price: Number,
+    paid: {
       type: Boolean,
       default: false
-    }
+    },
+    relatedSales: String
   },
   {
     timestamps: true,

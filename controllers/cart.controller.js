@@ -23,7 +23,7 @@ module.exports.create = async (req, res, next) => {
       } else {
 
         let shipPrice = ship.shipping.filter((el) => el.province === req.currentZip)
-        console.log(shipPrice)
+
         if (!req.currentCart) { //----------------------- create cart
 
           if (req.currentUser) {
@@ -149,7 +149,7 @@ module.exports.adjustQ = async (req, res, next) => {
       }
     } else {
       let hasMoreThanOne = newCart.products.some((el) => el.quantity > 1)
-      console.log(hasMoreThanOne)
+ 
       if (hasMoreThanOne) {
         newCart.products.forEach((p) => {
           if ((p.product).toString() === (productId).toString()) {
