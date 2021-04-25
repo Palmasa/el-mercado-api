@@ -136,6 +136,13 @@ supplierSchema.virtual('shippings', {
   localField: '_id',
 })
 
+
+supplierSchema.virtual('sales', {
+  ref: 'Sale',
+  foreignField: 'supplier',
+  localField: '_id',
+})
+
 supplierSchema.virtual('reviews', {
   ref: 'Review',
   foreignField: 'supplier',

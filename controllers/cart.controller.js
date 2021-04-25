@@ -23,7 +23,7 @@ module.exports.create = async (req, res, next) => {
       } else {
 
         let shipPrice = ship.shipping.filter((el) => el.province === req.currentZip)
-        console.log(shipPrice)
+
         if (!req.currentCart) { //----------------------- create cart
 
           if (req.currentUser) {
@@ -94,8 +94,12 @@ module.exports.deleteItem = async (req, res, next) => {
   const { productId } = req.params
   try {
     let newCart = await Cart.findById(req.currentCart)
+    let q 
+    if (newCart.products.length !== 0) { // codigo spaguetti
+      q = (newCart.products.filter((p) => (p.product).toString() === (productId).toString()))[0].quantity
+    }
     newCart.products = newCart.products.filter((p) => (p.product).toString() !== (productId).toString())
-    console.log(newCart)
+    
     if (newCart.products.length === 0) {
       await Cart.findByIdAndDelete(req.currentCart)
       newCart = 'Carrito eliminado'
@@ -104,18 +108,11 @@ module.exports.deleteItem = async (req, res, next) => {
       const supp = await Supplier.findById(product.supplier)
       const ship = await Shipping.findById(product.shipping)
 
-      let q // NO ME PILLA EL VALOR DE LA Q: JFK
-      newCart.products.map((p) => {
-        if ((p.product).toString() === (product._id).toString()) {
-          q = p.quantity 
-        }
-      })
       let cartHasSameSupp = newCart.products.some((el) => (el.supplierId).toString() === (supp._id).toString())
       
+      
       if (cartHasSameSupp) {
-        console.log(q)
         newCart.total = newCart.total - (product.price * q)
-        console.log(newCart.total)
       } else {
         newCart.total = newCart.total - (product.price * q) - ship.sendPrice
       }
@@ -129,10 +126,56 @@ module.exports.deleteItem = async (req, res, next) => {
 }
 
 module.exports.adjustQ = async (req, res, next) => {
-  
+  const { productId, operator } = req.params
+
+  try {
+    let newCart = await Cart.findById(req.currentCart)
+    const product = await Product.findById(productId)
+    const supp = await Supplier.findById(product.supplier)
+    const ship = await Shipping.findById(product.shipping)
+
+    if (operator === "add") {
+      newCart.products.forEach((p) => {
+        if ((p.product).toString() === (productId).toString()) {
+          p.quantity += 1
+        }
+      })
+      let cartHasSameSupp = newCart.products.some((el) => (el.supplierId).toString() === (supp._id).toString())
+      
+      if (cartHasSameSupp) {
+        newCart.total = newCart.total + product.price
+      } else {
+        newCart.total = newCart.total + product.price + ship.sendPrice
+      }
+    } else {
+      let hasMoreThanOne = newCart.products.some((el) => el.quantity > 1)
+ 
+      if (hasMoreThanOne) {
+        newCart.products.forEach((p) => {
+          if ((p.product).toString() === (productId).toString()) {
+              p.quantity -= 1
+          }
+        })
+        let cartHasSameSupp = newCart.products.some((el) => (el.supplierId).toString() === (supp._id).toString())
+        
+        if (cartHasSameSupp) {
+          newCart.total = newCart.total - product.price
+        } else {
+          newCart.total = newCart.total - product.price - ship.sendPrice
+        }
+      }
+    }
+
+    await Cart.findOneAndUpdate({ _id: req.currentCart}, newCart,{ new: true, useFindAndModify: false })
+    res.json(newCart)
+
+  } catch(e) { next(e) }
 }
 
 module.exports.delete = async (req, res, next) => {
-  // await Cart.findByIdAndDelete(req.currentCart)
+  try {
+    await Cart.findByIdAndDelete(req.currentCart)
+    res.json({message: "El carrito ha sido eliminado"})
+  } catch(e) { next(e) }
 }
 

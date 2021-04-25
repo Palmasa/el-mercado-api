@@ -20,9 +20,16 @@ router.get(
   cartController.deleteItem
 )
 
+router.get(
+  '/ajustar-cantidad-item/:productId/:operator',
+  hasCartMiddleware.hasCart,
+  cartController.adjustQ
+)
+
 router.delete(
-  '/delete-carrito',
+  '/delete-carrito-perm',
   hasCartMiddleware.hasCart,
   cartController.delete
-) 
+)
+
 module.exports = router;
