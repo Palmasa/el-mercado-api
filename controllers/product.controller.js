@@ -11,21 +11,26 @@ module.exports.getAll = async (req, res, next) => {
   if (search) criteria.name = new RegExp(search, 'i')
   if (categ) criteria.categ = { '$in': [categ] }
   criteria.active = true
-  
   try {
     const listProducts = await Product.find(criteria)
-    //JFK
-    /* let okToSend let yesSend = [] let noSend = []
     if (req.currentZip) {
-      listProducts.map((prod) => {
-        const ship = await Shipping.findById(prod.shipping)
-        okToSend = ship.shipping.some((el) => el.province === req.currentZip)
-        if (okToSend) { yesSend.push(prod) } else { noSend.push(prod) }
-      })
-    } */
-    // res.json({yesSend, noSend})
-
-    res.json(listProducts)
+      let okToSend 
+      let yesSend = [] 
+      let noSend = []
+      const promises = listProducts.map((prod) => Shipping.findById(prod.shipping))
+      const resolvePromises = await Promise.all( promises )
+      listProducts.map((prod, i) => {
+        okToSend = resolvePromises[i].shipping.some((el) => el.province === req.currentZip)
+        if (okToSend) {
+          yesSend.push(prod) 
+        } else { 
+          noSend.push(prod)
+        } 
+      }) 
+      res.json({yesSend, noSend})
+    } else {
+      res.json(listProducts)
+    }
   } catch(e) { next(e) }
 }
 
