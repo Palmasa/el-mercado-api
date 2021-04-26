@@ -22,7 +22,7 @@ module.exports.billGenerator = (products) => {
   return allProducts
 }
 
-module.exports.billPdf = (products, total) => {
+module.exports.billPdf = (products, total, promo) => {
   let suppliers = []
   products.map((p) => suppliers.push(p.supplierId))
   let suppliersFiltered = removeDuplicates(suppliers)
@@ -48,7 +48,10 @@ module.exports.billPdf = (products, total) => {
     table.rows.push([`Envío de ${saleProducts[0].supplier}`, '', '', `${saleProducts[0].sendPrice}€`])
     pdfDoc.moveDown(0.5);
   }
-  
+  if (promo) {
+    table.rows.push(['Total', '', '', `${promo + total}€`])
+    table.rows.push(['Código de descuento', '', '', `-${promo}€`])
+  }
   pdfDoc.moveDown(1);
   table.rows.push(['Coste total', '', '', `${total}€`])
   pdfDoc.table(table, {
