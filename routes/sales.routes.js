@@ -13,20 +13,31 @@ router.post(
   saleController.create
 )
 
+// Cancelar venta usuario
+router.get(
+  '/cancelar-venta-usuarios/:saleID',
+  authMiddleware.isAuthenticated,
+  roleMiddleware.isUser,
+  saleController.cancelSale
+)
+// Get venta por user
+router.get(
+  '/ventas-ususario',
+  authMiddleware.isAuthenticated,
+  roleMiddleware.isUser,
+  saleController.getUserSales
+)
+
+router.post('/crear-promo', saleController.createPromo)
+
 // Cobro venta
 
 // Modificar estado de la venta
 router.post(
-  '/modificar-estado-venta-vendors',
+  '/modificar-estado-venta-vendors/saleID',
   authMiddleware.isAuthenticated,
   roleMiddleware.isSupplier,
   saleController.changeStateSupp
-)
-router.post(
-  '/modificar-estado-venta-usuarios',
-  authMiddleware.isAuthenticated,
-  roleMiddleware.isSupplier,
-  saleController.changeStateUsers
 )
 
 // Hook de stripe
@@ -45,14 +56,6 @@ router.get(
   authMiddleware.isAuthenticated,
   roleMiddleware.isSupplier,
   saleController.getCompletedSales
-)
-
-// Get venta por user
-router.get(
-  '/ventas-ususario',
-  authMiddleware.isAuthenticated,
-  roleMiddleware.isUser,
-  saleController.getUserSales
 )
 
 module.exports = router;

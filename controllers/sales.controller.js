@@ -4,6 +4,8 @@ const { removeDuplicates } = require('../helpers/removeDuplicates')
 const mailer = require('../config/mailer.config');
 const User = require("../models/User.model");
 const Supplier = require("../models/Supplier.model");
+const createError = require('http-errors');
+const Promo = require("../models/Promo.model");
 
 // Create sale
 module.exports.create = async (req, res, next) => {
@@ -49,18 +51,52 @@ module.exports.create = async (req, res, next) => {
 
     // Stripe cobrar todo junto
     let finalPriceTotal = finalPrice.reduce((a,b) => a + b)
+    if (req.body.promo) {
+      const promo = await Promo.findOne({ code: req.body.promo })
+      if (!promo) {
+        next(createError(404, 'Código de promoción no encontrado'))
+      } else {
+        finalPriceTotal -= promo.discount
+        if (finalPriceTotal < 0) {
+          await Promo.findOneAndUpdate(
+            {code: req.body.promo },
+            { discount: finalPriceTotal *= -1 },
+            { new: true, useFindAndModify: false }
+          )
+          // NO TE COBRO
+        } else if (finalPriceTotal === 0) {
+          await Promo.findOneAndDelete({code: req.body.promo })
+          // NO TE COBRO
+        } else {
+          await Promo.findOneAndDelete({code: req.body.promo })
+          // TE COBRO STRIPE
+        }
 
-    // STRIPE
+        const user = await User.findById(req.currentUser)
+        mailer.sendSaleUser(user.email, cart.products, `${req.body.street}, ${req.body.number}. ${req.body.city}, ${req.body.zip}, `,finalPriceTotal, promo.discount)
+        
+        // await Cart.findByIdAndDelete(req.currentCart)
+        res.status(201).json(allSales)
+      }
+    } else {
+      const user = await User.findById(req.currentUser)
+        mailer.sendSaleUser(user.email, cart.products, `${req.body.street}, ${req.body.number}. ${req.body.city}, ${req.body.zip}, `,finalPriceTotal)
+        
+        // await Cart.findByIdAndDelete(req.currentCart)
+        res.status(201).json(allSales)
+    }
 
-    const user = await User.findById(req.currentUser)
-    mailer.sendSaleUser(user.email, cart.products, `${req.body.street}, ${req.body.number}. ${req.body.city}, ${req.body.zip}, `,finalPriceTotal)
-    
-    // await Cart.findByIdAndDelete(req.currentCart)
-    res.status(201).json(allSales)
   } catch(e) { next(e) }
 }
 
-// hook de stripe. Encontrar todas las sales y -> paid: true
+module.exports.createPromo = async (req, res, next) => {
+  try {
+    const promo = await Promo.create({ discount: req.body.discount })
+    res.json(promo)
+  } catch(e) { next(e) }
+}
+
+// hook de stripe. Encontrar todas las sales y -> paid: true, state: Preparando
 
 // Get ventas en curso por supplier 
 module.exports.getOngoingSales = async (req, res, next) => {
@@ -81,32 +117,53 @@ module.exports.getCompletedSales = async (req, res, next) => {
 module.exports.changeStateSupp = async (req, res, next) => {
   const { saleID } = req.params
   try {
-    if (req.body.state === 'Denegado') {
-      mailer.sendEmailUserFromSupp()
+    const sale = await Sale.findById(saleID)
+    const user = await User.findById(sale.user)
+    const supp = await Supplier.findById(sale.supplier)
+    if (req.body.state === 'Cancelado') {
+      const promo = await Promo.create({ discount: sale.price })
+
+      mailer.sendEmailUserFromSupp(
+        user.email,
+        `El puesto ${supp.name} ha ${req.body.state} su pedido`,
+        `${req.body.message}. Disculpe las molestias.
+        Dispone de un código de promoción por la cantidad de ${sale.price}€ con el código ${promo.code}`
+      )
     }
     if (req.body.state === 'Entregado') {
-      mailer.sendSaleDone()
+      mailer.sendSaleDone(user.email, supp.name, sale.products, '/home') // jfk: url a review
     }
 
 
-    const sale = await Sale.findByIdAndUpdate({ _id: saleID }, { state: req.body.state }, { new: true, useFindAndModify: false })
-    res.json(sale)
+    const saleEdited = await Sale.findByIdAndUpdate({ _id: saleID }, { state: req.body.state }, { new: true, useFindAndModify: false })
+    res.json(saleEdited)
   } catch(e) { next(e) }
 }
 
-module.exports.changeStateUsers = async (req, res, next) => {
+module.exports.cancelSale = async (req, res, next) => {
   const { saleID } = req.params
+  let saleEdited
   try {
-    if (req.body.state === 'Cancelado') {
-      mailer.sendEmailUserFromSupp()
-    }
-    if (req.body.state === 'Entregado') {
-      mailer.sendSaleDone()
-    }
+    const sale = await Sale.findById(saleID)
+    const user = await User.findById(sale.user)
+    const supp = await Supplier.findById(sale.supplier)
+    if (sale.state === 'Procesando') {
+     saleEdited = 'El pedido ha sido cancelado antes del cobro'
+    } else if (sale.state !== 'Prerarando') {
+      next(createError(404, 'El pedido ha sido enviado'))
+    } else {
+      const promo = await Promo.create({ discount: sale.price })
 
+        mailer.sendEmailUserFromSupp(
+          user.email,
+          `Su pedido de ${supp.name} ha sido cancelado`,
+          `Su pedido ha sido cancelado.
+          Dispone de un código de promoción por la cantidad de ${sale.price}€ con el código ${promo.code}`
+        )
+      saleEdited = await Sale.findByIdAndUpdate({ _id: saleID }, { state: 'Cancelado' }, { new: true, useFindAndModify: false })
+    }
+    res.json(saleEdited)
 
-    const sale = await Sale.findByIdAndUpdate({ _id: saleID }, { state: req.body.state }, { new: true, useFindAndModify: false })
-    res.json(sale)
   } catch(e) { next(e) }
 }
 

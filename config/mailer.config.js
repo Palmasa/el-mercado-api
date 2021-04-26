@@ -63,8 +63,8 @@ module.exports.sendChangePassword = (email, token) => {
   })
 }
 
-module.exports.sendSaleUser = async (email, cart, address, total) => {
-  billPdf(cart, total)
+module.exports.sendSaleUser = async (email, cart, address, total, promo) => {
+  billPdf(cart, total, promo)
   setTimeout(() => {
     transporter
     .sendMail({
@@ -73,6 +73,7 @@ module.exports.sendSaleUser = async (email, cart, address, total) => {
       subject: 'Gracias por su compra',
       html: `<p>Gracias por su compra: </p>
       <ul>${billGenerator(cart)}</ul>
+      <p>Código de promoción: -${promo || 0}€</p>
       <p>Total: ${total}€</p>
       <p>Dirección de entrega: ${address}</p>`,
       attachments: [ {
