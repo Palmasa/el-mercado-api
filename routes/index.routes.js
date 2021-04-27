@@ -6,7 +6,10 @@ const zipController = require('../controllers/zip.controller')
 // Zip
 router.post('/create-zip', zipController.zip)
 
-// SALES
+// INFO
+router.get('/all-categs', indexController.menuCategs)
+router.get('/sub-categs', indexController.productCategs)
+router.get('/main-categs', indexController.categs)
 
 // INDEX
 router.get('/', indexController.index)
