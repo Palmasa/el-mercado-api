@@ -4,7 +4,14 @@ const Cart = require('../models/Cart.model')
 const Product = require('../models/Product.model');
 const Supplier = require('../models/Supplier.model');
 const Shipping = require('../models/Shipping.model');
-// hacer calculos de el coste de envio por supplier
+
+module.exports.get = async (req, res, next) => {
+  try {
+    const cart = await Cart.findById(req.currentCart)
+    res.json(cart)
+  } catch(e) { next(e) }
+}
+
 module.exports.create = async (req, res, next) => {
   let cart, newCart
   const { productId } = req.params

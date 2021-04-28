@@ -73,7 +73,7 @@ module.exports.login = async (req, res, next) => {
             expiresIn: '1d'
           }
         ),
-        zDec: zip,
+        zip: zip,
         cart
       }
       )

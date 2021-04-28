@@ -26,10 +26,10 @@ module.exports.getAll = async (req, res, next) => {
         } else { 
           noSend.push(prod)
         } 
-      }) 
+      })
       res.json({yesSend, noSend})
     } else {
-      res.json(listProducts)
+      res.json({ listProducts: listProducts })
     }
   } catch(e) { next(e) }
 }

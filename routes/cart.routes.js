@@ -5,7 +5,6 @@ const ifUserMiddleware = require('../middlewares/ifUser.middleware')
 const hasZipMiddleware = require('../middlewares/zip.middleware')
 const hasCartMiddleware = require('../middlewares/cart.middleware')
 
-
 router.get(
   '/crear-carrito/:productId',
   hasZipMiddleware.hasZip,
@@ -30,6 +29,12 @@ router.delete(
   '/delete-carrito-perm',
   hasCartMiddleware.hasCart,
   cartController.delete
+)
+
+router.get(
+  '/carrito/me',
+  hasCartMiddleware.hasCart,
+  cartController.get
 )
 
 module.exports = router;

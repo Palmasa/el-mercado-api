@@ -13,3 +13,10 @@ module.exports.zip = (req, res, next) => {
     res.json({ zip, zDec }) // a local S
   }
 }
+
+
+module.exports.get = (req, res, next) => {
+  try {
+    res.json(req.currentZip)
+  } catch(e) { next(e) }
+}
