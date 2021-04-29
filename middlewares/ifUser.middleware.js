@@ -1,13 +1,15 @@
+const jwt = require('jsonwebtoken')
+const createError = require('http-errors')
 
 module.exports.ifUser = (req, res, next) => {
   // Get Authorization header
   const authHeader = req.header('Authorization')
-
+  
   if (authHeader) {
     // Check protocol
     const authProtocol = authHeader.split(' ')[0]
 
-    if (authProtocol === 'Bearer') {
+    if (authProtocol === 'Bearer' && authHeader.split(' ')[1] == null) {
       // Verify token - if not correct it will throw exception
       jwt.verify(
         authHeader ? authHeader.split(' ')[1] : '',

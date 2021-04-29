@@ -15,9 +15,10 @@ module.exports.get = async (req, res, next) => {
 module.exports.create = async (req, res, next) => {
   let cart, newCart
   const { productId } = req.params
+ 
   try {
     if (!req.currentZip) {
-      next(createError(404, 'Se necesita el cp'))
+      next(createError(404, { errors: { zip: 'Se necesita el código postal' }}))
     } else {
 
       const product = await Product.findById(productId)
@@ -26,7 +27,7 @@ module.exports.create = async (req, res, next) => {
       let okToSend = ship.shipping.some((el) => el.province === req.currentZip)
  
       if (!okToSend) {
-        next(createError(404, 'Este producto no llega a su provincia'))
+        next(createError(404, { errors: { zip: 'Este producto no llega a su provincia' }}))
       } else {
 
         let shipPrice = ship.shipping.filter((el) => el.province === req.currentZip)

@@ -8,8 +8,8 @@ const hasCartMiddleware = require('../middlewares/cart.middleware')
 router.get(
   '/crear-carrito/:productId',
   hasZipMiddleware.hasZip,
-  hasCartMiddleware.hasCart,
   ifUserMiddleware.ifUser,
+  hasCartMiddleware.hasCart,
   cartController.create
 )
 
