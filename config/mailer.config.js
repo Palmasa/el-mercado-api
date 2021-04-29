@@ -25,8 +25,8 @@ module.exports.sendActivationEmail = (email, token) => {
       from: `"El Mercado" <ines@el-mercado.es>`,
       to: email,
       subject: 'Activa tu cuenta',
-      text: `Gracias por registrarte en El Mercado http://localhost:3001/api/activate/${token}`,
-      html: `<p>Gracias por registrarte en El Mercado <a href="http://localhost:3001/api/activate/${token}">Click</a> http://localhost:3001/api/activate/${token}</p>`
+      text: `Gracias por registrarte en El Mercado http://localhost:3000/activar-usuarios//${token}`,
+      html: `<p>Gracias por registrarte en El Mercado <a href="http://localhost:3000/activar-usuarios/${token}">Click</a> http://localhost:3000/activar-usuarios/${token}</p>`
     })
 }
 
