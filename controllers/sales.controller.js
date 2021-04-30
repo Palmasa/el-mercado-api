@@ -35,17 +35,16 @@ module.exports.create = async (req, res, next) => {
         supplier: suppliersFiltered[i],
         relatedSales: (cart._id).toString(),
         address: {
-          CA: req.body.ccaa,
-          province: req.body.province,
           city: req.body.city,
           street: req.body.street,
           number: req.body.number,
+          block: req.body.block,
           zip: req.body.zip,
         }
       })
       const supp = await Supplier.findById(suppliersFiltered[i])
 
-      mailer.sendSaleSupplier(supp.email, saleProducts, salePrice, `${req.body.street}, ${req.body.number}. ${req.body.city}, ${req.body.zip}, `)
+      mailer.sendSaleSupplier(supp.email, saleProducts, salePrice, `${req.body.street}, ${req.body.number}, ${req.body.block}. ${req.body.city}, ${req.body.zip}, `)
       allSales.push(sale)
     }
 

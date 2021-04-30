@@ -39,17 +39,10 @@ const userSchema = new mongoose.Schema(
         type: String,
         default: "España",
       },
-      CA: {
-        type: String,
-        enum: ccaa
-      },
-      province: {
-        type: String,
-        enum: provinces
-      },
       city: String,
       street: String,
       number: Number,
+      block: String,
       zip: Number,
     },
     underAge: {

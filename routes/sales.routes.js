@@ -22,7 +22,7 @@ router.get(
 )
 // Get venta por user
 router.get(
-  '/ventas-ususario',
+  '/ventas-usuarios',
   authMiddleware.isAuthenticated,
   roleMiddleware.isUser,
   saleController.getUserSales

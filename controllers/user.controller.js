@@ -6,11 +6,10 @@ module.exports.edit = async (req, res, next) => {
 
   req.body.address = {
     country: 'España',
-    CA: req.body.ccaa,
-    province: req.body.province,
     city: req.body.city,
     street: req.body.street,
     number: req.body.number,
+    block: req.body.block,
     zip: req.body.zip,
   }
 

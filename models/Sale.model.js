@@ -28,12 +28,11 @@ const saleSchema = new mongoose.Schema(
         type: String,
         default: "España",
       },
-      CA: String,
-      province: String,
       city: String,
       street: String,
       number: Number,
-      zip: Number,
+      block: String,
+      zip: Number
     },
     user: {
       type: mongoose.Types.ObjectId,
