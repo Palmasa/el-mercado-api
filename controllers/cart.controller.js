@@ -156,23 +156,23 @@ module.exports.adjustQ = async (req, res, next) => {
         newCart.total = newCart.total + product.price + ship.sendPrice
       }
     } else {
-      let hasMoreThanOne = newCart.products.some((el) => el.quantity > 1)
- 
-      if (hasMoreThanOne) {
+      let quantityOne = false
         newCart.products.forEach((p) => {
-          if ((p.product).toString() === (productId).toString()) {
+          if ((p.product).toString() === (productId).toString() && p.quantity > 1) {
               p.quantity -= 1
+              quantityOne = true
           }
         })
-        let cartHasSameSupp = newCart.products.some((el) => (el.supplierId).toString() === (supp._id).toString())
-        
-        if (cartHasSameSupp) {
-          newCart.total = newCart.total - product.price
-        } else {
-          console.log('NO FUNCIONA -> SHIP.SENDpRICE NO ES, HAZ CONSOLE.LOG DE SHIP Y SACALO COMO EN LAS LINEAS 77 O 125')
-          newCart.total = newCart.total - product.price - ship.sendPrice
+        if (quantityOne) {
+          let cartHasSameSupp = newCart.products.some((el) => (el.supplierId).toString() === (supp._id).toString())
+          
+          if (cartHasSameSupp) {
+            newCart.total = newCart.total - product.price
+          } else {
+            console.log('NO FUNCIONA -> SHIP.SENDpRICE NO ES, HAZ CONSOLE.LOG DE SHIP Y SACALO COMO EN LAS LINEAS 77 O 125')
+            newCart.total = newCart.total - product.price - ship.sendPrice
+          }
         }
-      }
     }
 
     await Cart.findOneAndUpdate({ _id: req.currentCart}, newCart,{ new: true, useFindAndModify: false })
