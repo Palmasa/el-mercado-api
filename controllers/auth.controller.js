@@ -70,7 +70,7 @@ module.exports.login = async (req, res, next) => {
           { id: user._id },
           process.env.JWT_SECRET || 'changeme',
           {
-            expiresIn: '1d'
+            expiresIn: '7d'
           }
         ),
         zip: zip,

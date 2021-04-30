@@ -74,7 +74,7 @@ module.exports.create = async (req, res, next) => {
             if (cartHasSameSupp) {
               oldCart.total += product.price
             } else {
-              oldCart.total = product.price + ship.sendPrice + oldCart.total
+              oldCart.total += (product.price + shipPrice[0].sendPrice)
             }
 
             oldCart.products.push({
@@ -122,10 +122,9 @@ module.exports.deleteItem = async (req, res, next) => {
       if (cartHasSameSupp) {
         newCart.total = newCart.total - (product.price * q)
       } else {
-        newCart.total = newCart.total - (product.price * q) - ship.sendPrice
+        newCart.total = newCart.total - (product.price * q) - ship.shipping[0].sendPrice
       }
     }
-
     await Cart.findOneAndUpdate({ _id: req.currentCart}, newCart,{ new: true, useFindAndModify: false })
     res.json(newCart)
 
@@ -153,6 +152,7 @@ module.exports.adjustQ = async (req, res, next) => {
       if (cartHasSameSupp) {
         newCart.total = newCart.total + product.price
       } else {
+        console.log('NO FUNCIONA -> SHIP.SENDpRICE NO ES, HAZ CONSOLE.LOG DE SHIP Y SACALO COMO EN LAS LINEAS 77 O 125')
         newCart.total = newCart.total + product.price + ship.sendPrice
       }
     } else {
@@ -169,6 +169,7 @@ module.exports.adjustQ = async (req, res, next) => {
         if (cartHasSameSupp) {
           newCart.total = newCart.total - product.price
         } else {
+          console.log('NO FUNCIONA -> SHIP.SENDpRICE NO ES, HAZ CONSOLE.LOG DE SHIP Y SACALO COMO EN LAS LINEAS 77 O 125')
           newCart.total = newCart.total - product.price - ship.sendPrice
         }
       }
