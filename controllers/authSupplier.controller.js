@@ -93,7 +93,7 @@ module.exports.loginSupplier = async (req, res, next) => {
           { id: supplier._id },
           process.env.JWT_SECRET || 'changeme',
           {
-            expiresIn: '1d'
+            expiresIn: '7d'
           }
         )
       })

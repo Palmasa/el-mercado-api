@@ -13,7 +13,7 @@ router.get('/users/me', authMiddleware.isAuthenticated, authController.get)
 
 // SUPPLIER
 router.post(
-  '/vendor/registration',
+  '/vendors/registration',
   upload.fields([
     { name: 'logo', maxCount: 1 },
     { name: 'imgs', maxCount: 4 },
@@ -21,8 +21,8 @@ router.post(
   ]),
   authSupplierController.registrationSupplier
 )
-router.get('/vendor/activate/:token', authSupplierController.activateSupplier)
-router.post('/vendor/login', authSupplierController.loginSupplier)
-router.get('/vendor/me', authMiddleware.isAuthenticated, authSupplierController.getSupplier)
+router.get('/vendors/activate/:token', authSupplierController.activateSupplier)
+router.post('/vendors/login', authSupplierController.loginSupplier)
+router.get('/vendors/me', authMiddleware.isAuthenticated, authSupplierController.getSupplier)
 
 module.exports = router;
