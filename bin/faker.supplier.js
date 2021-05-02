@@ -7,7 +7,7 @@ module.exports.supp = [
     categ: ['Carne y aves'],
     slug: slugGeneratorSupplier( 'Carnicería Manolo e hijos', ['Carne y aves']),
     type: 'Productor',
-    img: [ './faker.Imgs/carnicerias/carniceria-1.jpeg', './faker.Imgs/carnicerias/carniceria-2.jpeg', './faker.Imgs/carnicerias/carniceria-3.jpeg'],
+    imgs: [ './faker.Imgs/carnicerias/carniceria-1.jpeg', './faker.Imgs/carnicerias/carniceria-2.jpeg', './faker.Imgs/carnicerias/carniceria-3.jpeg'],
     logo: './faker.Imgs/carnicerias/logo-carniceria-1.png',
     address: {
       CA: 'Castilla La Mancha',
@@ -29,7 +29,7 @@ module.exports.supp = [
     categ: ['Dulces'],
     slug: slugGeneratorSupplier('Los dulces del norte', ['Dulces']),
     type: 'Productor',
-    img: [ './faker.Imgs/pastelerias/pasteleria-1.jpeg', './faker.Imgs/pastelerias/pasteleria-3.jpeg'],
+    imgs: [ './faker.Imgs/pastelerias/pasteleria-1.jpeg', './faker.Imgs/pastelerias/pasteleria-3.jpeg'],
     logo: './faker.Imgs/pastelerias/logo-pasteleria-1.png',
     address: {
       CA: 'Asturias',
@@ -53,7 +53,7 @@ module.exports.supp = [
     categ: ['Conservas'],
     slug: slugGeneratorSupplier('Anchoas Laso', ['Conservas']),
     type: 'Proveedor',
-    img: [ './faker.Imgs/pescados/anchoas-1.jpeg', './faker.Imgs/pescados/anchoas-2.jpeg'],
+    imgs: [ './faker.Imgs/pescados/anchoas-1.jpeg', './faker.Imgs/pescados/anchoas-2.jpeg'],
     logo: './faker.Imgs/pescados/logo-anchoas-1.jpeg',
     address: {
       CA: 'Cantabria',
@@ -77,7 +77,7 @@ module.exports.supp = [
     categ: ['Panes, cereales y harinas', 'Dulces'],
     slug: slugGeneratorSupplier( 'Pan en contexto', ['Panes cereales y harinas', 'Dulces']),
     type: 'Productor',
-    img: [ './faker.Imgs/panaderias/panaderia-1.jpeg', './faker.Imgs/panaderias/panaderia-2.jpeg', './faker.Imgs/panaderias/panaderia-3.jpeg'],
+    imgs: [ './faker.Imgs/panaderias/panaderia-1.jpeg', './faker.Imgs/panaderias/panaderia-2.jpeg', './faker.Imgs/panaderias/panaderia-3.jpeg'],
     logo: './faker.Img/logo-panaderia-1.jpeg',
     address: {
       CA: 'Castilla y León',
@@ -101,7 +101,7 @@ module.exports.supp = [
     categ: ['Mermeladas y miel'],
     slug: slugGeneratorSupplier('Mantecas Colorás', ['Mermeladas y miel']),
     type: 'Proveedor',
-    img: ['./faker.Imgs/mermeladas.miel/manteca-1.jpeg'],
+    imgs: ['./faker.Imgs/mermeladas.miel/manteca-1.jpeg'],
     address: {
       CA: 'Andalucía',
       province: 'Sevilla',

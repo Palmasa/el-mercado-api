@@ -37,12 +37,8 @@ const supplierSchema = new mongoose.Schema(
       required: true,
       enum: supplierType,
     },
-    imgs: {
-      enum: [ String ],
-    },
-    logo: {
-      type: String
-    },
+    imgs: String,
+    logo: String,
     bio: {
       type: String,
       minlenght: [ 25, "La descripción del comercio es demasiado corta" ],
@@ -64,14 +60,6 @@ const supplierSchema = new mongoose.Schema(
         type: String,
         default: "España",
       },
-      CA: {
-        type: String,
-        enum: ccaa
-      },
-      province: {
-        type: String,
-        enum: provinces
-      },
       city: String,
       street: String,
       number: Number,
@@ -82,22 +70,20 @@ const supplierSchema = new mongoose.Schema(
         name: String,
       },
     ],
-    owner: {
-      name: {
-        type: String,
-        trim: true,
-        maxlength: [ 40, 'El nombre es demasiado largo' ]
-      },
-      img: String,
-      bio: {
-        type: String,
-        minlenght: [ 10, "La descripción del responsable es demasiado corta" ],
-        maxlength: [ 600, "La descripción del responsable es demasiado larga" ]
-      },
+    ownerName: {
+      type: String,
+      trim: true,
+      maxlength: [ 40, 'El nombre es demasiado largo' ]
+    },
+    ownerImg: String,
+    ownerBio: {
+      type: String,
+      minlenght: [ 10, "La descripción del responsable es demasiado corta" ],
+      maxlength: [ 600, "La descripción del responsable es demasiado larga" ]
     },
     active: {
       type: Boolean,
-      default: false
+      default: true
     },
     token: {
       type: String,

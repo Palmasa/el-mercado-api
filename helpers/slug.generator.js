@@ -8,17 +8,13 @@ module.exports.slugGeneratorProduct = (name, categ) => {
   )
 }
 
-module.exports.slugGeneratorSupplier = (name, categs) => {
+module.exports.slugGeneratorSupplier = (name) => {
   let slug = ''
-  let categ = []
-  categs.map((c) => categ.push(c))
-  let categSlug = categ
-  .map((c) => c.split(' ').filter(c => c != 'y').join('-'))
   let randomNum = `${Math.floor(Math.random() * 10) + 1}${Math.floor(Math.random() * 10) + 1}${Math.floor(Math.random() * 10) + 1}${Math.floor(Math.random() * 10) + 1}`
   
   return (
     name.includes(' ')
-    ? slug = `${randomNum}-${categSlug.join('-')}-${name.split(' ').join('-')}`
-    : slug = `${randomNum}-${categSlug.join('-')}-${name}`
+    ? slug = `${randomNum}-${name.split(' ').join('-')}`
+    : slug = `${randomNum}-${name}`
   )
 }
