@@ -50,7 +50,7 @@ module.exports.create = async (req, res, next) => {
   // op 3 -> peninsula y baleares (con ceuta y melilla)
   if (req.body.selected === 'three') option = [ 'Las Palmas', 'Santa Cruz de Tenerife' ]
   // op 4 -> peninsula y baleares (sin ceuta y melilla)
-  if (req.body.selected === 'four') option = [ 'Baleares', 'Las Palmas', 'Santa Cruz de Tenerife' ]
+  if (req.body.selected === 'four') option = [ 'Ceuta', 'Melilla', 'Las Palmas', 'Santa Cruz de Tenerife' ]
 
   req.body.shipping = ship.filter((obj => !option.includes(obj.province)))
 

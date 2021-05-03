@@ -6,6 +6,15 @@ const roleMiddleware = require('../middlewares/role.middleware')
 const hasZipMiddleware = require('../middlewares/zip.middleware')
 const upload = require('../config/storage.config')
 
+
+// Get per supplier 
+router.get(
+  '/products-suppliers',
+  authMiddleware.isAuthenticated,
+  roleMiddleware.isSupplier,
+  productController.getProductsPerSupplier
+)
+
 // Create
 router.post(
   '/product/create',
