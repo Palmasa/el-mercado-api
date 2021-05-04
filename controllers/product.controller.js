@@ -78,6 +78,7 @@ module.exports.create = async (req, res, next) => {
     const arrFiles = []
     req.files.map(file => arrFiles.push(file.path))
     req.body.img = arrFiles
+    console.log(arrFiles)
   }
   
   try {

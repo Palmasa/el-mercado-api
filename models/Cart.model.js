@@ -16,6 +16,7 @@ const cartSchema = new mongoose.Schema(
         supplier: String,
         supplierId: String,
         sendPrice: Number,
+        sendTime: String
       }
     ],
     user: {

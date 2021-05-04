@@ -13,6 +13,8 @@ router.post(
   saleController.create
 )
 
+router.post('/checkout', hasCartMiddleware.hasCart, saleController.pay)
+
 // Cancelar venta usuario
 router.get(
   '/cancelar-venta-usuarios/:saleID',
@@ -20,6 +22,7 @@ router.get(
   roleMiddleware.isUser,
   saleController.cancelSale
 )
+
 // Get venta por user
 router.get(
   '/ventas-usuarios',

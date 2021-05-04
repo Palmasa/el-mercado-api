@@ -4,6 +4,7 @@ const createError = require('http-errors')
 const Cart = require('../models/Cart.model')
 const Product = require('../models/Product.model');
 const Shipping = require("../models/Shipping.model");
+const {removeDuplicates} = require('../helpers/removeDuplicates')
 
 module.exports.zip = async (req, res, next) => {
   const { zip } = req.body
@@ -38,15 +39,11 @@ module.exports.zip = async (req, res, next) => {
           deletedItems.push(prod)
         }
       })
-      console.log(okItems)
+
       if (deletedItems.length === 0) {
-
         res.json({ zip, zDec, message: 'Todos los productos de su bolsa llegan al nuevo código postal proporcionado' })
-      
       } else if (okItems.length === 0) {
-
         res.json({ zip, zDec, message: 'Su cesta ha sido eliminada' })
-
       } else { // A partir de aquí no probado en el front por falta de productos
 
         currentCart.products = okItems
@@ -54,21 +51,22 @@ module.exports.zip = async (req, res, next) => {
         // Precio sin envio
         let onlypricesandQ = []
         currentCart.products.map((p) => onlypricesandQ.push(p.price * p.quantity))
-        console.log(onlypricesandQ)
+
         currentCart.total = onlypricesandQ.reduce((a , b) =>  a + b)
 
-        //precio con envio
-        let allSupp = []
+        //precio con envio - NO TE COBRO ENCVIO
+        /* let allSupp = []
         currentCart.products.map((p) => allSupp.push(p.supplierId))
         let uniqueSupp = removeDuplicates(allSupp)
+        console.log(uniqueSupp)
         let allPrices = []
         for (let i = 0; i <= uniqueSupp.length; i++) {
-          const eachPrice = currentCart.products.find((el) => el.supplierId === uniqueSupp[i])
+          const eachPrice = currentCart.products.find((el) => el.supplierId.toString() === uniqueSupp[i].toString())
           allPrices.push(eachPrice.sendPrice)
         }
-        currentCart.total += allPrices.reduce((a, b) => a + b)
+        currentCart.total += allPrices.reduce((a, b) => a + b) */
   
-        const cartUpdated = Cart.findOneAndUpdate({ _id: req.currentCart}, currentCart,{ new: true, useFindAndModify: false })
+        const cartUpdated = await Cart.findOneAndUpdate({ _id: req.currentCart}, currentCart,{ new: true, useFindAndModify: false })
         res.json({ zip, zDec, cartUpdated, deletedItems })
       }
     }

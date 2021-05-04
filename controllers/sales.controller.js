@@ -6,6 +6,31 @@ const User = require("../models/User.model");
 const Supplier = require("../models/Supplier.model");
 const createError = require('http-errors');
 const Promo = require("../models/Promo.model");
+const Stripe = require('stripe')
+
+const stripe = new Stripe("sk_test_51Ik9zhKuQKvQj70tBPa2XewniUW8yqqnkvspHIh7mXcpOEdFsFDrPGvbclNXFvEWxxzeJPvEZ2r3mElp7YlC7d8300k79gkjYY")
+
+module.exports.pay = async (req, res, next) => {
+  try {
+    const { id, amount } = req.body
+  
+    await stripe.paymentIntents.create({
+      amount: amount,
+      currency: "EUR",
+      description: "Lunch product",
+      payment_method: id,
+      confirm: true
+    })
+
+    await Sale.updateMany({ relatedSales: req.currentCart }, { $set: { paid: true } })
+    const salesUpdate = await Sale.updateMany({ relatedSales: req.currentCart }, { $set: { state: 'Preparando' } })
+
+    res.json(salesUpdate)
+  } catch(e) {
+    /* res.json({ message: e.raw.message }) */
+    console.log(e)
+  }
+}
 
 // Create sale
 module.exports.create = async (req, res, next) => {
@@ -57,32 +82,27 @@ module.exports.create = async (req, res, next) => {
       } else {
         finalPriceTotal -= promo.discount
         if (finalPriceTotal < 0) {
-          await Promo.findOneAndUpdate(
+          await Promo.findOneAndUpdate( // NO TE COBRO
             {code: req.body.promo },
             { discount: finalPriceTotal *= -1 },
             { new: true, useFindAndModify: false }
           )
-          // NO TE COBRO
         } else if (finalPriceTotal === 0) {
-          await Promo.findOneAndDelete({code: req.body.promo })
-          // NO TE COBRO
+          await Promo.findOneAndDelete({code: req.body.promo }) // NO TE COBRO
         } else {
-          await Promo.findOneAndDelete({code: req.body.promo })
-          // TE COBRO STRIPE
+          await Promo.findOneAndDelete({code: req.body.promo })// TE COBRO STRIPE
         }
 
         const user = await User.findById(req.currentUser)
         mailer.sendSaleUser(user.email, cart.products, `${req.body.street}, ${req.body.number}. ${req.body.city}, ${req.body.zip}, `,finalPriceTotal, promo.discount)
         
-        // await Cart.findByIdAndDelete(req.currentCart)
-        res.status(201).json(allSales)
+        res.status(201).json({allSales, toPay: finalPriceTotal })
       }
     } else {
       const user = await User.findById(req.currentUser)
         mailer.sendSaleUser(user.email, cart.products, `${req.body.street}, ${req.body.number}. ${req.body.city}, ${req.body.zip}, `,finalPriceTotal)
         
-        // await Cart.findByIdAndDelete(req.currentCart)
-        res.status(201).json(allSales)
+        res.status(201).json({allSales, toPay: finalPriceTotal })
     }
 
   } catch(e) { next(e) }
@@ -94,8 +114,6 @@ module.exports.createPromo = async (req, res, next) => {
     res.json(promo)
   } catch(e) { next(e) }
 }
-
-// hook de stripe. Encontrar todas las sales y -> paid: true, state: Preparando
 
 // Get ventas en curso por supplier 
 module.exports.getOngoingSales = async (req, res, next) => {

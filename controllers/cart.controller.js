@@ -31,7 +31,7 @@ module.exports.create = async (req, res, next) => {
       } else {
 
         let shipPrice = ship.shipping.filter((el) => el.province === req.currentZip)
-
+        console.log(shipPrice)
         if (!req.currentCart) { //----------------------- create cart
 
           if (req.currentUser) {
@@ -46,6 +46,7 @@ module.exports.create = async (req, res, next) => {
             supplierId: supp._id,
             quantity: 1,
             sendPrice: shipPrice[0].sendPrice,
+            sendTime: shipPrice[0].sendTime
           }]
           req.body.total = shipPrice[0].sendPrice + product.price
           cart = await Cart.create(req.body) 
@@ -86,6 +87,7 @@ module.exports.create = async (req, res, next) => {
               supplierId: supp._id,
               quantity: 1,
               sendPrice: shipPrice[0].sendPrice,
+              sendTime: shipPrice[0].sendTime
             })
             cart = await Cart.findOneAndUpdate({ _id: oldCart._id}, oldCart,{ new: true, useFindAndModify: false })
           }
