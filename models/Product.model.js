@@ -16,13 +16,10 @@ const productSchema = new mongoose.Schema(
     name: {
       type: String,
       trim: true,
-      maxlength: [ 40, 'El nombre es demasiado largo' ],
       required: true
     },
     bio: {
       type: String,
-      minlenght: [ 10, "La descripción del producto es demasiado corta" ],
-      maxlength: [ 800, "La descripción del producto es demasiado larga" ],
       required: true
     },
     categ: {
@@ -37,7 +34,7 @@ const productSchema = new mongoose.Schema(
     measure: {
       type: String,
       required: true,
-      enum: [ 'Kg', 'Unidad', 'Pack' ]
+      enum: [ 'Kg', 'Unidad', 'Pack', 'L' ]
     },
     ifPack: {
       u: Number

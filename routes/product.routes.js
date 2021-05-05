@@ -3,6 +3,7 @@ const router = express.Router()
 const productController = require('../controllers/product.controller')
 const authMiddleware = require('../middlewares/auth.middleware')
 const roleMiddleware = require('../middlewares/role.middleware')
+const ifUserMiddleware = require('../middlewares/ifUser.middleware')
 const hasZipMiddleware = require('../middlewares/zip.middleware')
 const upload = require('../config/storage.config')
 
@@ -11,9 +12,12 @@ const upload = require('../config/storage.config')
 router.get(
   '/products-suppliers',
   authMiddleware.isAuthenticated,
-  roleMiddleware.isSupplier,
   productController.getProductsPerSupplier
 )
+
+//Get per supplier public route
+
+
 
 // Create
 router.post(

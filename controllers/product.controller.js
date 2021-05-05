@@ -285,6 +285,7 @@ module.exports.getBoosted = async (req, res, next) => {
 
 module.exports.getProductsPerSupplier = async (req, res, next) => {
   try {
+    console.log(req.currentUser)
     const listProducts = await Product.find({ supplier: req.currentUser}).populate('sales')
     res.json(listProducts)
   } catch(e) { next(e) }
