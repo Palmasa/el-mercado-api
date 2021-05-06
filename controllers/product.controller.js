@@ -11,6 +11,7 @@ module.exports.getAll = async (req, res, next) => {
   if (search) criteria.name = new RegExp(search, 'i')
   if (categ) criteria.categ = { '$in': [categ] }
   criteria.active = true
+  
   try {
     const listProducts = await Product.find(criteria)
     if (req.currentZip) {

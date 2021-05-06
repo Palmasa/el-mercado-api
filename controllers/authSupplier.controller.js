@@ -19,7 +19,7 @@ module.exports.registrationSupplier = async (req, res, next) => {
     try {
 
       req.body.slug = slugGeneratorSupplier(req.body.name, req.body.categ)
-      console.log(req.files)
+      
       if (req.files) {
         if (req.files.imgs) {
           req.body.imgs = req.files.imgs[0].path
@@ -32,7 +32,6 @@ module.exports.registrationSupplier = async (req, res, next) => {
           req.body.ownerImg = req.files.ownerImg[0].path
         }
       }
-
       req.body.address = {
         city: req.body.city,
         street: req.body.street,
@@ -41,7 +40,7 @@ module.exports.registrationSupplier = async (req, res, next) => {
       }
       const supplierCreated = await Supplier.create(req.body)
       mailer.sendActivationEmailSupplier(supplierCreated.email, supplierCreated.token)
-      res.status(201).json({ message: "Vendedor registrado"})
+      res.status(201).json({ message: "Vendedor registrado", supp: supplierCreated })
     } catch(e) {
       if (e instanceof mongoose.Error.ValidationError) {
         next(createError(401, { errors: { email: 'Email inválido', password: 'Contraseña inválida', CIF: 'CIF inválido', categ: 'Categoría inválida', name: 'Nombre requerido', type: 'Modelo de comercio requerido'}}))

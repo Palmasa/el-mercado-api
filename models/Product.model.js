@@ -34,7 +34,7 @@ const productSchema = new mongoose.Schema(
     measure: {
       type: String,
       required: true,
-      enum: [ 'Kg', 'Unidad', 'Pack', 'L' ]
+      enum: [ 'Kg', 'Unidad', 'Pack', 'L', 'ml' ]
     },
     ifPack: {
       u: Number

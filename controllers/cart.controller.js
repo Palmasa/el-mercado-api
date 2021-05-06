@@ -31,7 +31,7 @@ module.exports.create = async (req, res, next) => {
       } else {
 
         let shipPrice = ship.shipping.filter((el) => el.province === req.currentZip)
-        console.log(shipPrice)
+        
         if (!req.currentCart) { //----------------------- create cart
 
           if (req.currentUser) {
