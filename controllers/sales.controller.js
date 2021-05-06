@@ -7,7 +7,7 @@ const Supplier = require("../models/Supplier.model");
 const createError = require('http-errors');
 const Promo = require("../models/Promo.model");
 const Stripe = require('stripe')
-
+// Change deploy TODO
 const stripe = new Stripe("sk_test_51Ik9zhKuQKvQj70tBPa2XewniUW8yqqnkvspHIh7mXcpOEdFsFDrPGvbclNXFvEWxxzeJPvEZ2r3mElp7YlC7d8300k79gkjYY")
 
 module.exports.pay = async (req, res, next) => {
