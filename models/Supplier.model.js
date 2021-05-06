@@ -64,6 +64,8 @@ const supplierSchema = new mongoose.Schema(
       street: String,
       number: Number,
       zip: Number,
+      lat: String,
+      long: String
     },
     certificates: [
       {

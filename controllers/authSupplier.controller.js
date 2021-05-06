@@ -19,20 +19,17 @@ module.exports.registrationSupplier = async (req, res, next) => {
     try {
 
       req.body.slug = slugGeneratorSupplier(req.body.name, req.body.categ)
-      let arrImgs
+      console.log(req.files)
       if (req.files) {
         if (req.files.imgs) {
-          const arrImgs = []
-          req.files.imgs.map(file => arrImgs.push(file.path))
-          req.body.imgs = req.files.imgs.path
+          req.body.imgs = req.files.imgs[0].path
         }
         if (req.files.logo) {
-          const strLogo = req.files.logo.path
+          const strLogo = req.files.logo[0].path
           req.body.logo = strLogo
         }
         if (req.files.ownerImg) {
-          arrImgs = req.files.ownerImg.path
-          req.body.ownerImg = req.files.ownerImg.path
+          req.body.ownerImg = req.files.ownerImg[0].path
         }
       }
 

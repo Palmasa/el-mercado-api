@@ -16,8 +16,8 @@ router.post(
   '/vendors/registration',
   upload.fields([
     { name: 'logo', maxCount: 1 },
-    { name: 'imgs', maxCount: 4 },
-    { name: 'owner[imgs]', maxCount: 1 }
+    { name: 'imgs', maxCount: 1 },
+    { name: 'ownerImg', maxCount: 1 }
   ]),
   authSupplierController.registrationSupplier
 )

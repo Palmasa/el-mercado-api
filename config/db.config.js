@@ -10,11 +10,11 @@ mongoose
     useCreateIndex: true,
   })
   .then(() =>
-    console.info(`Successfully connected to the database ${MONGODB_URI}`)
+    console.info(`Successfully connected to the database`)
   )
   .catch((error) => {
     console.error(
-      `An error ocurred trying to connect to de database ${MONGODB_URI}`,
+      `An error ocurred trying to connect to de database`,
       error
     );
     process.exit(0);
