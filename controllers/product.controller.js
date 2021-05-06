@@ -9,7 +9,7 @@ module.exports.getAll = async (req, res, next) => {
   const criteria = {}
   const { categ, search } = req.query
   if (search) criteria.name = new RegExp(search, 'i')
-  if (categ) criteria.categ = { '$in': [categ] }
+  if (categ) criteria.categ = { '$in': categ }
   criteria.active = true
   
   try {
