@@ -17,7 +17,7 @@ module.exports.getAll = async (req, res, next) => {
 
 module.exports.getOne = async (req, res, next) => {
   try {
-    const supplier = await Supplier.findOne({ slug: req.params.slug, active: true })
+    const supplier = await Supplier.findOne({ slug: req.params.slug, active: true }).populate('products')
     if (!supplier) {
       next(createError(404, 'Vendedor no encontrado'))
     } else {

@@ -57,7 +57,15 @@ router.patch(
   productController.desactivate
 )
 
-// Rectivate
+// reactivate no stock
+router.patch(
+  '/product/plain-reactivate/:id',
+  authMiddleware.isAuthenticated,
+  roleMiddleware.isSupplier,
+  productController.reactivatePlain
+)
+
+// Rectivate with stock
 router.post(
   '/product/reactivate/:id',
   authMiddleware.isAuthenticated,

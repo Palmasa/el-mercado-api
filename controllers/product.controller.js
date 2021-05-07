@@ -1,6 +1,7 @@
 const createError = require('http-errors');
 const mongoose = require('mongoose')
 const Product = require("../models/Product.model");
+const Supplier = require("../models/Supplier.model");
 const Shipping = require('../models/Shipping.model');
 const { slugGeneratorProduct } = require('../helpers/slug.generator');
 
@@ -39,6 +40,7 @@ module.exports.getAll = async (req, res, next) => {
 module.exports.getOne = async (req, res, next) => {
   try {
     const product = await Product.findOne({ slug: req.params.slug, active: true })
+    const supplier = await Supplier.findById(product.supplier)
 
     if (!product) {
       next(createError(404, 'Producto no encontrado'))
@@ -50,7 +52,7 @@ module.exports.getOne = async (req, res, next) => {
         okToSend = ship.shipping.some((el) => el.province === req.currentZip)
       }
       
-      res.json({product, okToSend})
+      res.json({product, okToSend, supplier})
     }
   } catch(e) {
     next(e)
@@ -186,6 +188,28 @@ module.exports.desactivate = async (req, res, next) => {
       
       try {
         const toDesactivate = await Product.findByIdAndUpdate({ _id: req.params.id }, { active: false }, { new: true, useFindAndModify: false })
+        res.status(201).json(toDesactivate)
+      } catch(e) {
+        next(e)
+      }
+
+    }
+  } catch(e) {
+    next(e)
+  }
+}
+// Reactivate PLAIN
+module.exports.reactivatePlain = async (req, res, next) => {
+  try {
+    const product = await Product.findById(req.params.id)
+    if (!product) {
+      next(createError(403))
+    } else if (product.supplier.toString() !== req.currentUser.toString()) {
+      next(createError(403))
+    } else {
+      
+      try {
+        const toDesactivate = await Product.findByIdAndUpdate({ _id: req.params.id }, { active: true }, { new: true, useFindAndModify: false })
         res.status(201).json(toDesactivate)
       } catch(e) {
         next(e)
