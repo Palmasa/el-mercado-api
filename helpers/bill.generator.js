@@ -31,9 +31,8 @@ module.exports.billPdf = (products, total, promo) => {
   pdfDoc.pipe(fs.createWriteStream(`factura-el-mercado.pdf`));
 
   pdfDoc.fontSize(20)
-  pdfDoc.text("El Mercado", { align: 'center'})
+  pdfDoc.image('helpers/DARK.png', {width: 150, align: 'center'})
   pdfDoc.fontSize(10)
-  pdfDoc.text("www.el-mercado.es", { align: 'center'})
   pdfDoc.moveDown(2);
   const table = {
     headers: ['Producto', 'Proveedor', 'Cantidad', 'Precio' ],
@@ -43,17 +42,17 @@ module.exports.billPdf = (products, total, promo) => {
   for (let i = 0; i < suppliersFiltered.length; i++) {
     let saleProducts = products.filter((product) => (product.supplierId).toString() ===  (suppliersFiltered[i]).toString())
     saleProducts.forEach((p) => {
-      table.rows.push([p.name, p.supplier, `x0${p.quantity}`, `${p.quantity * p.price}€`])
+      table.rows.push([p.name, p.supplier, `x0${p.quantity}`, `${(p.quantity * p.price)/100}€`])
     })
-    table.rows.push([`Envío de ${saleProducts[0].supplier}`, '', '', `${saleProducts[0].sendPrice}€`])
+    table.rows.push([`Envío de ${saleProducts[0].supplier}`, '', '', `${(saleProducts[0].sendPrice)/100}€`])
     pdfDoc.moveDown(0.5);
   }
   if (promo) {
-    table.rows.push(['Total', '', '', `${promo + total}€`])
-    table.rows.push(['Código de descuento', '', '', `-${promo}€`])
+    table.rows.push(['Total', '', '', `${(promo + total)/100}€`])
+    table.rows.push(['Código de descuento', '', '', `-${(promo)/100}€`])
   }
   pdfDoc.moveDown(1);
-  table.rows.push(['Coste total', '', '', `${total}€`])
+  table.rows.push(['Coste total', '', '', `${(total)/100}€`])
   pdfDoc.table(table, {
     prepareHeader: () => pdfDoc.font('Helvetica-Bold'),
     prepareRow: (row, i) => pdfDoc.font('Helvetica').fontSize(8)

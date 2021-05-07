@@ -47,7 +47,7 @@ module.exports.zip = async (req, res, next) => {
       } else { // A partir de aquí no probado en el front por falta de productos
 
         currentCart.products = okItems
-
+        
         // Precio sin envio
         let onlypricesandQ = []
         currentCart.products.map((p) => onlypricesandQ.push(p.price * p.quantity))

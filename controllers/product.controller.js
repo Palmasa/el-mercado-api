@@ -49,6 +49,7 @@ module.exports.getOne = async (req, res, next) => {
         const ship = await Shipping.findById(product.shipping)
         okToSend = ship.shipping.some((el) => el.province === req.currentZip)
       }
+      
       res.json({product, okToSend})
     }
   } catch(e) {

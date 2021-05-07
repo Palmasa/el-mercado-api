@@ -23,6 +23,9 @@ router.get(
   saleController.cancelSale
 )
 
+//enviar email
+router.post('/send-sale-email', saleController.sendEmailSale)
+
 // Get venta por user
 router.get(
   '/ventas-usuarios',

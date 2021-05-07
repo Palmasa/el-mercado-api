@@ -10,6 +10,14 @@ const Stripe = require('stripe')
 // Change deploy TODO
 const stripe = new Stripe("sk_test_51Ik9zhKuQKvQj70tBPa2XewniUW8yqqnkvspHIh7mXcpOEdFsFDrPGvbclNXFvEWxxzeJPvEZ2r3mElp7YlC7d8300k79gkjYY")
 
+module.exports.sendEmailSale = async (req, res, next) => {
+  try {
+    console.log(req.body.products)
+    const { email, products, address, price } = req.body
+    mailer.sendSaleUser(email, products, address, price)
+  } catch(e) { next(e) }
+}
+
 module.exports.pay = async (req, res, next) => {
   try {
     const { id, amount } = req.body
@@ -17,7 +25,7 @@ module.exports.pay = async (req, res, next) => {
     await stripe.paymentIntents.create({
       amount: amount,
       currency: "EUR",
-      description: "Lunch product",
+      description: "Yumi product",
       payment_method: id,
       confirm: true
     })
@@ -102,7 +110,7 @@ module.exports.create = async (req, res, next) => {
       const user = await User.findById(req.currentUser)
         mailer.sendSaleUser(user.email, cart.products, `${req.body.street}, ${req.body.number}. ${req.body.city}, ${req.body.zip}, `,finalPriceTotal)
         
-        res.status(201).json({allSales, toPay: finalPriceTotal })
+        res.status(201).json({allSales, toPay: finalPriceTotal, infoMail: {email: user.email, products: cart.products, address: `${req.body.street}, ${req.body.number}. ${req.body.city}, ${req.body.zip}, `, price: finalPriceTotal}})
     }
 
   } catch(e) { next(e) }
