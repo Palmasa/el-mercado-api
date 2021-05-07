@@ -40,9 +40,8 @@ router.post('/crear-promo', saleController.createPromo)
 
 // Modificar estado de la venta
 router.post(
-  '/modificar-estado-venta-vendors/saleID',
+  '/modificar-estado-venta-vendors/:saleID',
   authMiddleware.isAuthenticated,
-  roleMiddleware.isSupplier,
   saleController.changeStateSupp
 )
 

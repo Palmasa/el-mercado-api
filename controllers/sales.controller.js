@@ -152,11 +152,15 @@ module.exports.changeStateSupp = async (req, res, next) => {
         user.email,
         `El puesto ${supp.name} ha ${req.body.state} su pedido`,
         `${req.body.message}. Disculpe las molestias.
-        Dispone de un código de promoción por la cantidad de ${sale.price}€ con el código ${promo.code}`
+        Dispone de un código de promoción por la cantidad de ${(sale.price)/100}€ con el código ${promo.code}`
       )
     }
     if (req.body.state === 'Entregado') {
-      mailer.sendSaleDone(user.email, supp.name, sale.products, '/home') // jfk: url a review
+      mailer.sendEmailUserFromSupp(
+        user.email,
+        `El puesto ${supp.name} ha ${req.body.state} su pedido`,
+        `${req.body.message}. Muchas gracias.`
+      )
     }
 
 
@@ -167,6 +171,7 @@ module.exports.changeStateSupp = async (req, res, next) => {
 
 module.exports.cancelSale = async (req, res, next) => {
   const { saleID } = req.params
+  
   let saleEdited
   try {
     const sale = await Sale.findById(saleID)
@@ -174,7 +179,7 @@ module.exports.cancelSale = async (req, res, next) => {
     const supp = await Supplier.findById(sale.supplier)
     if (sale.state === 'Procesando') {
      saleEdited = 'El pedido ha sido cancelado antes del cobro'
-    } else if (sale.state !== 'Prerarando') {
+    } else if (sale.state !== 'Preparando') {
       next(createError(404, 'El pedido ha sido enviado'))
     } else {
       const promo = await Promo.create({ discount: sale.price })
@@ -183,7 +188,7 @@ module.exports.cancelSale = async (req, res, next) => {
           user.email,
           `Su pedido de ${supp.name} ha sido cancelado`,
           `Su pedido ha sido cancelado.
-          Dispone de un código de promoción por la cantidad de ${sale.price}€ con el código ${promo.code}`
+          Dispone de un código de promoción por la cantidad de ${(sale.price)/100}€ con el código ${promo.code}`
         )
       saleEdited = await Sale.findByIdAndUpdate({ _id: saleID }, { state: 'Cancelado' }, { new: true, useFindAndModify: false })
     }
