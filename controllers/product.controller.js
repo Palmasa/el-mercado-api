@@ -47,12 +47,16 @@ module.exports.getOne = async (req, res, next) => {
     } else {
 
       let okToSend
+      let shippModel = false
       if (req.currentZip) {
         const ship = await Shipping.findById(product.shipping)
         okToSend = ship.shipping.some((el) => el.province === req.currentZip)
+        if (okToSend) {
+          shippModel = ship.shipping.find((el) => el.province === req.currentZip)
+        }
       }
       
-      res.json({product, okToSend, supplier})
+      res.json({product, okToSend, supplier, shippModel})
     }
   } catch(e) {
     next(e)
