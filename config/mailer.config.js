@@ -289,7 +289,7 @@ module.exports.sendActivationEmail = (email, token) => {
                                   <tbody>
                                     <tr>
                                       <td class="pc-sm-fs-18 pc-xs-fs-16 pc-fb-font" style="font-family: 'Fira Sans', Helvetica, Arial, sans-serif; font-size: 20px; line-height: 30px; letter-spacing: -0.2px; color: #9B9B9B; padding: 0 10px;" valign="top">
-                                        <div style="text-align: left;">Bienvenido a El Mercado. A partir de ahora tendrás la oportunidad de comprar productos directamente a tus productores y proveedores favoritos estés donde estés. Para continuar, haz click en el siguiente botón.</div>
+                                        <div style="text-align: left;">Bienvenido a El Mercado. A partir de ahora tendrás la oportunidad de comprar productos directamente a tus productores y proveedores favoritos estés donde estés. Para continuar, haz click en el siguiente botón o en su defecto: https://m.el-mercado.es/activar-usuarios/${token}.</div>
                                       </td>
                                     </tr>
                                     <tr>
