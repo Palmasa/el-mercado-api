@@ -31,7 +31,7 @@ module.exports.create = async (req, res, next) => {
       } else {
 
         let shipPrice = ship.shipping.filter((el) => el.province === req.currentZip)
-        
+        console.log(shipPrice)
         if (!req.currentCart) { //----------------------- create cart
 
           if (req.currentUser) {
@@ -69,11 +69,12 @@ module.exports.create = async (req, res, next) => {
             oldCart.total += product.price
             cart = await Cart.findOneAndUpdate({ _id: oldCart._id}, oldCart,{ new: true, useFindAndModify: false })
 
-          } else { // ------------------------------------- add a product to cart
+          } else { // ------------------------------------- add a new product to cart
             
             let cartHasSameSupp = oldCart.products.some((el) => (el.supplierId).toString() === (supp._id).toString())
             if (cartHasSameSupp) {
               oldCart.total += product.price
+              // el ship de este nuevo producto que entra es mayor que
             } else {
               oldCart.total += (product.price + shipPrice[0].sendPrice)
             }
