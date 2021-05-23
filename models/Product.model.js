@@ -68,10 +68,13 @@ const productSchema = new mongoose.Schema(
       type: String,
       required: true
     },
-    boost: {
-      isBoosted: Boolean,
-      payment: Number,
-    }
+    isBoosted: {
+        type: Boolean,
+        default: false,
+      },
+    boostPayment: Number,
+    boostStart: Date,
+    boostEnd: Date,
   }, {
     timestamps: true,
     toJSON: {

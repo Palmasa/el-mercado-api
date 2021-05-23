@@ -5,6 +5,8 @@ let randomNum = () => {
   code.push(Math.floor(Math.random() * 10) + 1)
   code.push(Math.floor(Math.random() * 10) + 1)
   code.push(Math.floor(Math.random() * 10) + 1)
+  code.push(Math.floor(Math.random() * 10) + 1)
+  code.push(Math.floor(Math.random() * 10) + 1)
   code.push(characters.charAt(Math.floor(Math.random() * characters.length)))
   code.push(characters.charAt(Math.floor(Math.random() * characters.length)))
   return code.join("")

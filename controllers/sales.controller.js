@@ -84,11 +84,14 @@ module.exports.create = async (req, res, next) => {
     // Stripe cobrar todo junto
     let finalPriceTotal = finalPrice.reduce((a,b) => a + b)
     if (req.body.promo) {
+      console.log(req.body.promo)
       const promo = await Promo.findOne({ code: req.body.promo })
+      console.log(promo)
       if (!promo) {
         next(createError(404, 'Código de promoción no encontrado'))
       } else {
         finalPriceTotal -= promo.discount
+        console.log(finalPriceTotal)
         if (finalPriceTotal < 0) {
           await Promo.findOneAndUpdate( // NO TE COBRO
             {code: req.body.promo },
@@ -177,21 +180,17 @@ module.exports.cancelSale = async (req, res, next) => {
     const sale = await Sale.findById(saleID)
     const user = await User.findById(sale.user)
     const supp = await Supplier.findById(sale.supplier)
-    if (sale.state === 'Procesando') {
-     saleEdited = 'El pedido ha sido cancelado antes del cobro'
-    } else if (sale.state !== 'Preparando') {
-      next(createError(404, 'El pedido ha sido enviado'))
-    } else {
-      const promo = await Promo.create({ discount: sale.price })
-
-        mailer.sendEmailUserFromSupp(
-          user.email,
-          `Su pedido de ${supp.name} ha sido cancelado`,
-          `Su pedido ha sido cancelado.
-          Dispone de un código de promoción por la cantidad de ${(sale.price)/100}€ con el código ${promo.code}`
-        )
-      saleEdited = await Sale.findByIdAndUpdate({ _id: saleID }, { state: 'Cancelado' }, { new: true, useFindAndModify: false })
-    }
+    const sendP = sale.price - sale.products[0].sendPrice
+    const promo = await Promo.create({ discount: sendP })
+    console.log(promo)
+      mailer.sendEmailUserFromSupp(
+        user.email,
+        `Su pedido de ${supp.name} ha sido cancelado`,
+        `Su pedido ha sido cancelado.
+        Dispone de un código de promoción por la cantidad de ${(sendP)/100}€ con el código ${promo.code}`
+      )
+    saleEdited = await Sale.findByIdAndUpdate({ _id: saleID }, { state: 'Cancelado' }, { new: true, useFindAndModify: false })
+    
     res.json(saleEdited)
 
   } catch(e) { next(e) }

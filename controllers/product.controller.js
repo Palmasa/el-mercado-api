@@ -280,16 +280,11 @@ module.exports.boost = async (req, res, next) => {
     } else if (product.supplier.toString() !== req.currentUser.toString()) {
       next(createError(403))
     } else {
-
-      req.body.boost = {
-        isBoosted: true,
-        payment: req.body.payment
-      }
-
+      
       try {
         const editedProduct = await Product.findByIdAndUpdate(
           { _id: req.params.id },
-          req.body, 
+          {isBoosted: true, boostPayment: req.body.payment, boostStart: Date.now()},
           { new: true, useFindAndModify: false })
         res.status(201).json(editedProduct)
       } catch(e) { next(e) }

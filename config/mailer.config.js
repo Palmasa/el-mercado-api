@@ -247,12 +247,12 @@ module.exports.sendActivationEmail = (email, token) => {
                         <table width="100%" border="0" cellpadding="0" cellspacing="0" role="presentation">
                           <tbody>
                             <tr>
-                              <td valign="top" bgcolor="#E15D45" style="background-color: #E15D45; border-radius: 8px">
+                              <td valign="top" bgcolor="#f1ebe4" style="background-color: #f1ebe4; border-radius: 8px">
                                 <table border="0" cellpadding="0" cellspacing="0" width="100%" role="presentation">
                                   <tbody>
                                     <tr>
                                       <td class="pc-sm-p-30 pc-xs-p-25-20" valign="top" align="center" style="padding: 30px 40px;">
-                                        <a href="https://m.el-mercado.es" style="text-decoration: none;"><img src="https://res.cloudinary.com/el-mercado/image/upload/v1620339395/express/default/didbpfohzzqkhlp54a9n.png" width="160" height="" alt="" style="max-width: 100%; height: auto; border: 0; line-height: 100%; outline: 0; -ms-interpolation-mode: bicubic; color: #ffffff;"></a>
+                                        <a href="https://m.el-mercado.es" style="text-decoration: none;"><img src="https://res.cloudinary.com/el-mercado/image/upload/v1620339395/express/default/eibpvdb2jn5fq0xjnky4.png" width="160" height="" alt="" style="max-width: 100%; height: auto; border: 0; line-height: 100%; outline: 0; -ms-interpolation-mode: bicubic; color: #ffffff;"></a>
                                       </td>
                                     </tr>
                                     <tr>
@@ -302,7 +302,7 @@ module.exports.sendActivationEmail = (email, token) => {
                                         <table border="0" cellpadding="0" cellspacing="0" role="presentation">
                                           <tbody>
                                             <tr>
-                                              <td style="border-radius: 8px; padding: 14px 19px; background-color: #E15D45" bgcolor="#E15D45" valign="top" align="center">
+                                              <td style="border-radius: 8px; padding: 14px 19px; background-color: #f1ebe4" bgcolor="#f1ebe4" valign="top" align="center">
                                                 <a class="pc-fb-font" href="${
                                                   process.env.HOST || `http://localhost:3000`}
                                                   /activar-usuarios/${token}" style="text-decoration: none; word-break: break-word; line-height: 24px; letter-spacing: -0.2px; font-family: 'Fira Sans', Helvetica, Arial, sans-serif; font-size: 16px; font-weight: 500; color: #ffffff; display: block;">Activar mi cuenta</a>
@@ -330,25 +330,12 @@ module.exports.sendActivationEmail = (email, token) => {
                         <table border="0" cellpadding="0" cellspacing="0" width="100%" role="presentation">
                           <tbody>
                             <tr>
-                              <td class="pc-sm-p-38-30-40 pc-xs-p-25-20" style="padding: 38px 40px 40px 40px; background-color: #E15D45; border-radius: 8px" valign="top" bgcolor="#E15D45">
+                              <td class="pc-sm-p-38-30-40 pc-xs-p-25-20" style="padding: 38px 40px 40px 40px; background-color: #f1ebe4; border-radius: 8px" valign="top" bgcolor="#f1ebe4">
                                 <table border="0" cellpadding="0" cellspacing="0" width="100%" role="presentation">
+                                
                                   <tbody>
                                     <tr>
-                                      <td class="pc-xs-fs-14" style="text-align: center; font-family: Arial, sans-serif; font-size: 24px;" valign="top">
-                                        <a href="http://example.com/" style="text-decoration: none;"><img src="https://res.cloudinary.com/thecoopspain/image/upload/v1615579052/express/default/facebook-large-white_yccszw.png" width="20" height="20" alt="" style="border: 0; line-height: 100%; outline: 0; -ms-interpolation-mode: bicubic; font-size: 14px; color: #ffffff;"></a>
-                                        <span>&nbsp;&nbsp;&nbsp;</span>
-                                        <a href="http://example.com/" style="text-decoration: none;"><img src="https://res.cloudinary.com/thecoopspain/image/upload/v1615579052/express/default/twitter-large-white_xfb6y7.png" width="21" height="18" alt="" style="border: 0; line-height: 100%; outline: 0; -ms-interpolation-mode: bicubic; font-size: 14px; color: #ffffff;"></a>
-                                        <span>&nbsp;&nbsp;&nbsp;</span>
-                                        <a href="http://example.com/" style="text-decoration: none;"><img src="https://res.cloudinary.com/thecoopspain/image/upload/v1615579052/express/default/instagram-large-white_isoxsn.png" width="21" height="20" alt="" style="border: 0; line-height: 100%; outline: 0; -ms-interpolation-mode: bicubic; font-size: 14px; color: #ffffff;"></a>
-                                      </td>
-                                    </tr>
-                                    <tr>
-                                      <td height="15" style="font-size: 1px; line-height: 1px;">&nbsp;</td>
-                                    </tr>
-                                  </tbody>
-                                  <tbody>
-                                    <tr>
-                                      <td class="pc-fb-font" style="text-align: center; line-height: 20px; letter-spacing: -0.2px; font-family: 'Fira Sans', Helvetica, Arial, sans-serif; font-size: 14px; color: #ffffff" valign="top">El Mercado<br>https://m.el-mercado.es</td>
+                                      <td class="pc-fb-font" style="text-align: center; line-height: 20px; letter-spacing: -0.2px; font-family: 'Fira Sans', Helvetica, Arial, sans-serif; font-size: 14px; color: #000000" valign="top">El Mercado<br>https://m.el-mercado.es</td>
                                     </tr>
                                     <tr>
                                       <td height="13" style="font-size: 1px; line-height: 1px;">&nbsp;</td>
@@ -647,12 +634,12 @@ module.exports.sendSaleUser = async (email, cart, address, total, promo) => {
                         <table width="100%" border="0" cellpadding="0" cellspacing="0" role="presentation">
                           <tbody>
                             <tr>
-                              <td valign="top" bgcolor="#E15D45" style="background-color: #E15D45; border-radius: 8px">
+                              <td valign="top" bgcolor="#f1ebe4" style="background-color: #f1ebe4; border-radius: 8px">
                                 <table border="0" cellpadding="0" cellspacing="0" width="100%" role="presentation">
                                   <tbody>
                                     <tr>
                                       <td class="pc-sm-p-30 pc-xs-p-25-20" valign="top" align="center" style="padding: 30px 40px;">
-                                        <a href="https://m.el-mercado.es" style="text-decoration: none;"><img src="https://res.cloudinary.com/el-mercado/image/upload/v1620339395/express/default/didbpfohzzqkhlp54a9n.png" width="160" height="" alt="" style="max-width: 100%; height: auto; border: 0; line-height: 100%; outline: 0; -ms-interpolation-mode: bicubic; color: #ffffff;"></a>
+                                        <a href="https://m.el-mercado.es" style="text-decoration: none;"><img src="https://res.cloudinary.com/el-mercado/image/upload/v1620339395/express/default/eibpvdb2jn5fq0xjnky4.png" width="160" height="" alt="" style="max-width: 100%; height: auto; border: 0; line-height: 100%; outline: 0; -ms-interpolation-mode: bicubic; color: #ffffff;"></a>
                                       </td>
                                     </tr>
                                     <tr>
@@ -713,25 +700,12 @@ module.exports.sendSaleUser = async (email, cart, address, total, promo) => {
                         <table border="0" cellpadding="0" cellspacing="0" width="100%" role="presentation">
                           <tbody>
                             <tr>
-                              <td class="pc-sm-p-38-30-40 pc-xs-p-25-20" style="padding: 38px 40px 40px 40px; background-color: #E15D45; border-radius: 8px" valign="top" bgcolor="#E15D45">
+                              <td class="pc-sm-p-38-30-40 pc-xs-p-25-20" style="padding: 38px 40px 40px 40px; background-color: #f1ebe4; border-radius: 8px" valign="top" bgcolor="#f1ebe4">
                                 <table border="0" cellpadding="0" cellspacing="0" width="100%" role="presentation">
+                                  
                                   <tbody>
                                     <tr>
-                                      <td class="pc-xs-fs-14" style="text-align: center; font-family: Arial, sans-serif; font-size: 24px;" valign="top">
-                                        <a href="http://example.com/" style="text-decoration: none;"><img src="https://res.cloudinary.com/thecoopspain/image/upload/v1615579052/express/default/facebook-large-white_yccszw.png" width="20" height="20" alt="" style="border: 0; line-height: 100%; outline: 0; -ms-interpolation-mode: bicubic; font-size: 14px; color: #ffffff;"></a>
-                                        <span>&nbsp;&nbsp;&nbsp;</span>
-                                        <a href="http://example.com/" style="text-decoration: none;"><img src="https://res.cloudinary.com/thecoopspain/image/upload/v1615579052/express/default/twitter-large-white_xfb6y7.png" width="21" height="18" alt="" style="border: 0; line-height: 100%; outline: 0; -ms-interpolation-mode: bicubic; font-size: 14px; color: #ffffff;"></a>
-                                        <span>&nbsp;&nbsp;&nbsp;</span>
-                                        <a href="http://example.com/" style="text-decoration: none;"><img src="https://res.cloudinary.com/thecoopspain/image/upload/v1615579052/express/default/instagram-large-white_isoxsn.png" width="21" height="20" alt="" style="border: 0; line-height: 100%; outline: 0; -ms-interpolation-mode: bicubic; font-size: 14px; color: #ffffff;"></a>
-                                      </td>
-                                    </tr>
-                                    <tr>
-                                      <td height="15" style="font-size: 1px; line-height: 1px;">&nbsp;</td>
-                                    </tr>
-                                  </tbody>
-                                  <tbody>
-                                    <tr>
-                                      <td class="pc-fb-font" style="text-align: center; line-height: 20px; letter-spacing: -0.2px; font-family: 'Fira Sans', Helvetica, Arial, sans-serif; font-size: 14px; color: #ffffff" valign="top">El Mercado<br>https://m.el.mercado.es</td>
+                                      <td class="pc-fb-font" style="text-align: center; line-height: 20px; letter-spacing: -0.2px; font-family: 'Fira Sans', Helvetica, Arial, sans-serif; font-size: 14px; color: #000000" valign="top">El Mercado<br>https://m.el.mercado.es</td>
                                     </tr>
                                     <tr>
                                       <td height="13" style="font-size: 1px; line-height: 1px;">&nbsp;</td>
@@ -1013,12 +987,12 @@ module.exports.sendEmailUserFromSupp = (email, subject, message) => {
                       <table width="100%" border="0" cellpadding="0" cellspacing="0" role="presentation">
                         <tbody>
                           <tr>
-                            <td valign="top" bgcolor="#E15D45" style="background-color: #E15D45; border-radius: 8px">
+                            <td valign="top" bgcolor="#f1ebe4" style="background-color: #f1ebe4; border-radius: 8px">
                               <table border="0" cellpadding="0" cellspacing="0" width="100%" role="presentation">
                                 <tbody>
                                   <tr>
                                     <td class="pc-sm-p-30 pc-xs-p-25-20" valign="top" align="center" style="padding: 30px 40px;">
-                                      <a href="https://m.el-mercado.es" style="text-decoration: none;"><img src="https://res.cloudinary.com/el-mercado/image/upload/v1620339395/express/default/didbpfohzzqkhlp54a9n.png" width="160" height="" alt="" style="max-width: 100%; height: auto; border: 0; line-height: 100%; outline: 0; -ms-interpolation-mode: bicubic; color: #ffffff;"></a>
+                                      <a href="https://m.el-mercado.es" style="text-decoration: none;"><img src="https://res.cloudinary.com/el-mercado/image/upload/v1620339395/express/default/eibpvdb2jn5fq0xjnky4.png" width="160" height="" alt="" style="max-width: 100%; height: auto; border: 0; line-height: 100%; outline: 0; -ms-interpolation-mode: bicubic; color: #ffffff;"></a>
                                     </td>
                                   </tr>
                                   <tr>
@@ -1079,25 +1053,11 @@ module.exports.sendEmailUserFromSupp = (email, subject, message) => {
                       <table border="0" cellpadding="0" cellspacing="0" width="100%" role="presentation">
                         <tbody>
                           <tr>
-                            <td class="pc-sm-p-38-30-40 pc-xs-p-25-20" style="padding: 38px 40px 40px 40px; background-color: #E15D45; border-radius: 8px" valign="top" bgcolor="#E15D45">
+                            <td class="pc-sm-p-38-30-40 pc-xs-p-25-20" style="padding: 38px 40px 40px 40px; background-color: #f1ebe4; border-radius: 8px" valign="top" bgcolor="#f1ebe4">
                               <table border="0" cellpadding="0" cellspacing="0" width="100%" role="presentation">
                                 <tbody>
                                   <tr>
-                                    <td class="pc-xs-fs-14" style="text-align: center; font-family: Arial, sans-serif; font-size: 24px;" valign="top">
-                                      <a href="http://example.com/" style="text-decoration: none;"><img src="https://res.cloudinary.com/thecoopspain/image/upload/v1615579052/express/default/facebook-large-white_yccszw.png" width="20" height="20" alt="" style="border: 0; line-height: 100%; outline: 0; -ms-interpolation-mode: bicubic; font-size: 14px; color: #ffffff;"></a>
-                                      <span>&nbsp;&nbsp;&nbsp;</span>
-                                      <a href="http://example.com/" style="text-decoration: none;"><img src="https://res.cloudinary.com/thecoopspain/image/upload/v1615579052/express/default/twitter-large-white_xfb6y7.png" width="21" height="18" alt="" style="border: 0; line-height: 100%; outline: 0; -ms-interpolation-mode: bicubic; font-size: 14px; color: #ffffff;"></a>
-                                      <span>&nbsp;&nbsp;&nbsp;</span>
-                                      <a href="http://example.com/" style="text-decoration: none;"><img src="https://res.cloudinary.com/thecoopspain/image/upload/v1615579052/express/default/instagram-large-white_isoxsn.png" width="21" height="20" alt="" style="border: 0; line-height: 100%; outline: 0; -ms-interpolation-mode: bicubic; font-size: 14px; color: #ffffff;"></a>
-                                    </td>
-                                  </tr>
-                                  <tr>
-                                    <td height="15" style="font-size: 1px; line-height: 1px;">&nbsp;</td>
-                                  </tr>
-                                </tbody>
-                                <tbody>
-                                  <tr>
-                                    <td class="pc-fb-font" style="text-align: center; line-height: 20px; letter-spacing: -0.2px; font-family: 'Fira Sans', Helvetica, Arial, sans-serif; font-size: 14px; color: #ffffff" valign="top">El Mercado<br>https://m.el.mercado.es</td>
+                                    <td class="pc-fb-font" style="text-align: center; line-height: 20px; letter-spacing: -0.2px; font-family: 'Fira Sans', Helvetica, Arial, sans-serif; font-size: 14px; color: #000000" valign="top">El Mercado<br>https://m.el.mercado.es</td>
                                   </tr>
                                   <tr>
                                     <td height="13" style="font-size: 1px; line-height: 1px;">&nbsp;</td>
