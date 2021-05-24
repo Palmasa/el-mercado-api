@@ -4,6 +4,8 @@ const Product = require("../models/Product.model");
 const Supplier = require("../models/Supplier.model");
 const Shipping = require('../models/Shipping.model');
 const { slugGeneratorProduct } = require('../helpers/slug.generator');
+const Sale = require('../models/Sale.model');
+const { removeDuplicates } = require('../helpers/removeDuplicates');
 
 // Get all products
 module.exports.getAll = async (req, res, next) => {
@@ -57,21 +59,6 @@ module.exports.getOne = async (req, res, next) => {
       }
       
       res.json({product, okToSend, supplier, shippModel})
-    }
-  } catch(e) {
-    next(e)
-  }
-}
-
-// Get X to recommend
-module.exports.getRecommend = async (req, res, next) => {
-  try {
-    const product = await Product.find({ supplier: req.body.supplierId , active: true }).limit(5)
-
-    if (!product) {
-      next(createError(404, 'Productos no encontrados'))
-    } else {
-      res.json(products)
     }
   } catch(e) {
     next(e)
@@ -307,11 +294,127 @@ module.exports.getBoosted = async (req, res, next) => {
 }
 
 //get product per supp
-
 module.exports.getProductsPerSupplier = async (req, res, next) => {
   try {
     console.log(req.currentUser)
     const listProducts = await Product.find({ supplier: req.currentUser}).populate('sales')
     res.json(listProducts)
   } catch(e) { next(e) }
+}
+
+// Get to recommend same supp
+module.exports.getRecommendSupplier = async (req, res, next) => {
+  try {
+    const product = await Product.find({ supplier: req.params.supplierId , active: true })
+
+    if (!product) {
+      next(createError(404, 'Productos no encontrados'))
+    } else {
+      let sorted = product.sort(() => Math.random() - 0.5).slice(0, 16)
+      res.json(sorted)
+    }
+  } catch(e) {
+    next(e)
+  }
+}
+
+// Get to recommend same categ
+module.exports.getRecommendRelated = async (req, res, next) => {
+  const criteria = {}
+  const { categ } = req.query
+  if (categ) criteria.categ = { '$in': categ }
+  criteria.active = true
+  
+  try {
+    const listProducts = await Product.find(criteria)
+    if (req.currentZip) {
+      let okToSend 
+      let sorted  = []
+      let yesSend = [] 
+      let noSend = []
+      const promises = listProducts.map((prod) => Shipping.findById(prod.shipping))
+      const resolvePromises = await Promise.all( promises )
+      listProducts.map((prod, i) => {
+        okToSend = resolvePromises[i].shipping.some((el) => el.province === req.currentZip)
+        if (okToSend) {
+          yesSend.push(prod) 
+        } else { 
+          noSend.push(prod)
+        } 
+      })
+      sorted = yesSend.sort(() => Math.random() - 0.5).slice(0, 16)
+      res.json(sorted)
+    } else {
+      sorted = listProducts.sort(() => Math.random() - 0.5).slice(0, 16)
+      res.json(sorted)
+    }
+  } catch(e) { next(e) }
+}
+
+// Get to recommend BEST SELLERS OKKK
+function getOccurrence(array, value) {
+  var count = 0;
+  array.forEach((v) => (v === value && count++))
+  return count
+}
+module.exports.getBestSellers = async (req, res, next) => {
+  try {
+    const listProducts = await Product.find({ active: true })
+
+    let allPIds = []
+    listProducts.map((p) => allPIds.push(p._id))
+    
+    const sales = await Sale.find()
+    let allSoldProducts = []
+    sales.map((sale) => sale.products.forEach((s)=> allSoldProducts.push(s.product)))
+    
+    const stringify = allSoldProducts.map((p) => p.toString())
+    const bestSellersId = allPIds.sort((a, b) => getOccurrence(stringify, (b).toString()) - getOccurrence(stringify, a.toString()))
+    
+    const promiseProducts = bestSellersId.map((id) => Product.findById(id))
+    const resolveProducts = await Promise.all(promiseProducts)
+
+    if (req.currentZip) {
+      let okToSend 
+      let resolvedProductsZip = []
+      const promises = resolveProducts.map((prod) => Shipping.findById(prod.shipping))
+      const resolvePromises = await Promise.all( promises )
+      resolveProducts.map((prod, i) => {
+        okToSend = resolvePromises[i].shipping.some((el) => el.province === req.currentZip)
+        if (okToSend) {
+          resolvedProductsZip.push({ ...prod, noSend: false })
+          
+        } else { 
+          resolvedProductsZip.push({ ...prod, noSend: true })
+        } 
+      })
+      res.json({resolvedProductsZip})
+    } else {
+      res.json({resolveProducts})
+    }
+  } catch(e) { next(e) }
+}
+
+// Get to recommend Buy again OKKK
+module.exports.getBuyAgain = async (req, res, next) => {
+
+  try {
+    const clientSales = await Sale.find({ user: req.params.clientId })
+    if (clientSales.length === 0) {
+      res.json({ message: 'No sales'})
+    } else {
+      let allClientProductsIds = []
+      clientSales.map((sale) => sale.products.forEach((s)=> allClientProductsIds.push(s.product)))
+
+      const stringify = allClientProductsIds.map((p) => p.toString())
+      let uniqueProducts = removeDuplicates(stringify)
+
+      const promiseProducts = uniqueProducts.map((id) => Product.findById(id))
+      const resolveProducts = await Promise.all(promiseProducts)
+  
+      res.json(resolveProducts)
+    }
+  } catch(e) {
+    next(e)
+  }
 }

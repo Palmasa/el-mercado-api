@@ -84,7 +84,10 @@ router.delete(
 
 // Get products
 router.get('/products', hasZipMiddleware.hasZip, productController.getAll)
-router.post('/products-to-recommend', hasZipMiddleware.hasZip, productController.getRecommend)
+router.get('/products-to-recommend-related', hasZipMiddleware.hasZip, productController.getRecommendRelated)
+router.get('/products-to-recommend-supplier/:supplierId', hasZipMiddleware.hasZip, productController.getRecommendSupplier)
+router.get('/products-best-sellers', hasZipMiddleware.hasZip, productController.getBestSellers)
+router.get('/products-buy-again/:clientId', hasZipMiddleware.hasZip, productController.getBuyAgain)
 router.get('/products/:slug', hasZipMiddleware.hasZip, productController.getOne)
 
 module.exports = router;
