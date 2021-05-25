@@ -31,10 +31,7 @@ module.exports.productCategs = [
   'Pan rallado',
   'Harinas', 
   'Cereales',
-  // 'Conservas', ==================================================================
-  'Verduras',
-  'Pescados y mariscos',
-  'Legumbres',
+  'Conservas', // ==================================================================
   // 'Dulces', =====================================================================
   'Galletas',
   'Pastas',
@@ -58,6 +55,7 @@ module.exports.productCategs = [
   'Pastas',
   'Arroces',
   // 'Pescados', ===================================================================
+  'Pescado',
   'Crustáceos y moluscos',
   'Salmones y ahumados',
   // 'De la Huerta', ===============================================================
