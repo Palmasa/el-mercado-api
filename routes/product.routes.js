@@ -15,10 +15,6 @@ router.get(
   productController.getProductsPerSupplier
 )
 
-//Get per supplier public route
-
-
-
 // Create
 router.post(
   '/product/create',
@@ -41,6 +37,10 @@ router.post(
 router.get(
   '/products/boosted',
   productController.getBoosted
+)
+router.get(
+  '/products/notBoosted',
+  productController.getNotBoosted
 )
 router.post(
   '/products/boost/:id',

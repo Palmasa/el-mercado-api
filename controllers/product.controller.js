@@ -284,10 +284,11 @@ module.exports.boost = async (req, res, next) => {
 
 module.exports.getBoosted = async (req, res, next) => {
   try {
-    const boostedProducts = await Product.find({"boost.isBoosted": true}).sort({ "boost.payment": -1 })
+    const boostedProducts = await Product.find({isBoosted: true}).sort({ boostPayment: -1 })
     if (!boostedProducts) {
       next(createError(404, 'No hay productos boosted'))
     } else {
+      console.log(boostedProducts)
       res.json(boostedProducts)
     }
   } catch(e) { next(e) }
@@ -383,10 +384,7 @@ module.exports.getBestSellers = async (req, res, next) => {
         okToSend = resolvePromises[i].shipping.some((el) => el.province === req.currentZip)
         if (okToSend) {
           resolvedProductsZip.push({ ...prod, noSend: false })
-          
-        } else { 
-          resolvedProductsZip.push({ ...prod, noSend: true })
-        } 
+        }
       })
       res.json({resolvedProductsZip})
     } else {
@@ -395,7 +393,7 @@ module.exports.getBestSellers = async (req, res, next) => {
   } catch(e) { next(e) }
 }
 
-// Get to recommend Buy again OKKK
+// Get to recommend Buy again 
 module.exports.getBuyAgain = async (req, res, next) => {
 
   try {
@@ -411,10 +409,38 @@ module.exports.getBuyAgain = async (req, res, next) => {
 
       const promiseProducts = uniqueProducts.map((id) => Product.findById(id))
       const resolveProducts = await Promise.all(promiseProducts)
-  
       res.json(resolveProducts)
     }
   } catch(e) {
     next(e)
   }
+}
+
+//Get not filtered PRODUCTS
+module.exports.getNotBoosted = async (req, res, next) => {
+  const criteria = {}
+  criteria.active = true
+  criteria.isBoosted = false
+  
+  try {
+    const listProducts = await Product.find(criteria)
+    if (req.currentZip) {
+      let okToSend 
+      let yesSend = [] 
+      let noSend = []
+      const promises = listProducts.map((prod) => Shipping.findById(prod.shipping))
+      const resolvePromises = await Promise.all( promises )
+      listProducts.map((prod, i) => {
+        okToSend = resolvePromises[i].shipping.some((el) => el.province === req.currentZip)
+        if (okToSend) {
+          yesSend.push(prod) 
+        } else { 
+          noSend.push(prod)
+        } 
+      })
+      res.json({yesSend, noSend})
+    } else {
+      res.json({ listProducts: listProducts })
+    }
+  } catch(e) { next(e) }
 }
