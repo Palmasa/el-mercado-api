@@ -323,7 +323,7 @@ module.exports.getRecommendSupplier = async (req, res, next) => {
 module.exports.getRecommendRelated = async (req, res, next) => {
   const criteria = {}
   const { categ } = req.query
-  if (categ) criteria.categ = { '$in': categ }
+  criteria.categ = { '$in': categ }
   criteria.active = true
   
   try {

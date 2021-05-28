@@ -15,12 +15,10 @@ module.exports.productCategs = [
   'Caza',
   'Cordero',
   'Foi gras y patés',
-  'Salchichas, hamburguesas y picados',
   // 'Charcutería', ================================================================
   'Chorizo',
   'Lomo',
   'Jamón cocido',
-  'Jamón curado',
   'Salchichón',
   'Salamis',
   'Ibéricos',// NOT SUBS ===========================================================
@@ -34,10 +32,8 @@ module.exports.productCategs = [
   'Conservas', // ==================================================================
   // 'Dulces', =====================================================================
   'Galletas',
-  'Pastas',
   'Pasteles',
   'Bollería',
-  'Mazapanes',
   'Ázucar',
   // 'Sal y especias', =============================================================
   'Sales',
